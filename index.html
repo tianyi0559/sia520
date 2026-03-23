@@ -1,506 +1,556 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Sisterhood Atlas</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&family=Noto+Serif+SC:wght@300;400&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sia 3.1 | Sisterhood Atlas - 先听你说 · 再帮你想</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* --- Sia 3.1 智感清冷美学定义 (Silent Luxury UI) --- */
+        :root {
+            --bg-color: #FBFBF9; /* 羊脂玉色 - 呼吸感背景 */
+            --sia-bubble-bg: #FFFFFF; /* Sia气泡 - 纯净专业 */
+            --user-bubble-bg: #F1ECE3; /* 用户气泡 - 暖金微光 */
+            --text-color-primary: #2C2C2C; /* 深炭灰 - 高级阅读体验 */
+            --text-color-secondary: #6A6A6A; /* 灰陶色 - 副标题 */
+            --border-color: #E5E5E0; /* 极细边框 */
+            --accent-gold: #D4AF37; /* 古铜金 - 交互高光 */
+            --shadow-subtle: 0 4px 24px rgba(0,0,0,0.02); /* 极淡阴影 - 浮动感 */
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+        }
 
-:root {
-  --bg:      #F5F4F0;
-  --surface: #FAFAF8;
-  --surf2:   #F0EEE9;
-  --border:  #E2DDD6;
-  --border2: #CEC7BC;
-  --ink:     #2C2C2C;
-  --ink2:    #4A3728;
-  --ink3:    #8A7F72;
-  --ink4:    #B8B0A6;
-  --accent:  #4A3728;
-  --accent2: #7A5C3E;
-  --green:   #3D6B4F;
-  --red:     #8B3A3A;
-  --sh:      rgba(44,44,44,0.07);
-  --sh2:     rgba(44,44,44,0.13);
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'Lato','Noto Serif SC',sans-serif;font-weight:300;line-height:1.7;overflow:hidden}
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-color-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            line-height: 1.6;
+            font-weight: 300;
+        }
 
-.app{display:flex;flex-direction:column;height:100vh;max-width:680px;margin:0 auto}
+        /* --- Header: 品牌灵魂区 --- */
+        header {
+            padding: 20px 25px;
+            background-color: rgba(251, 251, 249, 0.95);
+            border-bottom: 0.5px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            text-align: center;
+        }
 
-/* HEADER */
-.header{flex-shrink:0;padding:18px 28px 14px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;animation:fadeDown .45s ease}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.logo-wrap{display:flex;flex-direction:column;gap:1px}
-.logo-main{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:20px;letter-spacing:.04em;color:var(--ink2)}
-.logo-sub{font-size:10px;letter-spacing:.2em;color:var(--ink4);text-transform:uppercase}
-.header-nav{display:flex;gap:2px;background:var(--surf2);border:1px solid var(--border);border-radius:6px;padding:3px}
-.nav-btn{padding:5px 15px;border:none;background:transparent;color:var(--ink3);font-family:'Lato',sans-serif;font-size:12px;font-weight:300;letter-spacing:.06em;cursor:pointer;border-radius:4px;transition:all .16s}
-.nav-btn.active{background:var(--surface);color:var(--ink2);font-weight:400;box-shadow:0 1px 4px var(--sh2)}
+        header h1 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: 1px;
+            color: var(--text-color-primary);
+        }
 
-/* PANELS */
-.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
-.panel{display:none;flex:1;flex-direction:column;overflow:hidden}
-.panel.active{display:flex}
+        header p {
+            font-size: 12px;
+            color: var(--text-color-secondary);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        }
 
-/* MESSAGES */
-.chat-messages{flex:1;overflow-y:auto;padding:32px 28px 12px;display:flex;flex-direction:column;gap:22px;scroll-behavior:smooth}
-.chat-messages::-webkit-scrollbar{width:3px}
-.chat-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+        /* --- Chat Main: 对话核心区 --- */
+        main {
+            flex: 1;
+            padding: 100px 20px 100px 20px; /* 为Header和Input留出空间 */
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
 
-/* WELCOME */
-.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 0 20px;animation:fadeUp .6s ease}
-.welcome-mark{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:52px;font-weight:300;color:var(--ink2);line-height:1;margin-bottom:14px;opacity:.8}
-.welcome-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;color:var(--ink);letter-spacing:.04em;margin-bottom:6px}
-.welcome-sub{font-size:11px;color:var(--ink4);letter-spacing:.14em;line-height:2.1}
-.welcome-divider{width:28px;height:1px;background:var(--border2);margin:18px 0}
-.welcome-prompts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:380px}
+        #chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-/* MESSAGE BUBBLES */
-.message{display:flex;gap:11px;animation:fadeUp .26s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.message.user{flex-direction:row-reverse}
-.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:5px}
-.avatar.ai{background:var(--ink2);color:var(--bg);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px}
-.avatar.user-av{background:var(--surf2);border:1px solid var(--border2);color:var(--ink3);font-size:10px;letter-spacing:.03em}
-.bubble{max-width:76%;padding:13px 17px;border-radius:12px;font-size:14px;line-height:1.82}
-.bubble.ai{background:var(--surface);border:1px solid var(--border);color:var(--ink);border-top-left-radius:3px}
-.bubble.user{background:var(--ink2);color:rgba(255,255,255,.86);border-top-right-radius:3px;text-align:right}
-.bubble p{margin-bottom:5px}
-.bubble p:last-child{margin-bottom:0}
+        /* 气泡通用样式 */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            position: relative;
+            box-shadow: var(--shadow-subtle);
+            border: 0.5px solid var(--border-color);
+        }
 
-/* STEP CARD */
-.step-card{margin-top:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg)}
-.step-header{padding:7px 14px;background:var(--surf2);font-size:10px;letter-spacing:.16em;color:var(--ink3);text-transform:uppercase;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
-.step-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.step-body{padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.88}
-.step-body ul{list-style:none;display:flex;flex-direction:column;gap:7px}
-.step-body li{padding-left:13px;position:relative}
-.step-body li::before{content:'';position:absolute;left:0;top:10px;width:4px;height:1px;background:var(--accent2)}
+        /* Sia 气泡: 左圆右方角 */
+        .message.sia {
+            align-self: flex-start;
+            background-color: var(--sia-bubble-bg);
+            border-bottom-left-radius: 4px;
+        }
 
-/* QUICK REPLIES */
-.quick-replies{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
-.qr-btn{padding:5px 13px;border:1px solid var(--border2);background:var(--surface);color:var(--ink2);font-family:'Lato',sans-serif;font-size:12px;font-weight:300;cursor:pointer;border-radius:20px;transition:all .15s;letter-spacing:.02em}
-.qr-btn:hover{border-color:var(--accent);background:var(--surf2);color:var(--accent)}
+        /* 用户气泡: #F1ECE3 暖金，黑字 */
+        .message.user {
+            align-self: flex-end;
+            background-color: var(--user-bubble-bg);
+            border-bottom-right-radius: 4px;
+            border: none; /* 用户气泡无需边框 */
+        }
 
-.verify-link{display:inline-block;margin-top:10px;font-size:11px;color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--border2);letter-spacing:.06em;transition:color .14s}
-.verify-link:hover{color:var(--accent);border-color:var(--accent)}
-.disclaimer{font-size:10px;color:var(--ink4);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);letter-spacing:.06em}
+        .message p {
+            margin-bottom: 8px;
+        }
 
-/* TYPING */
-.typing{display:flex;gap:5px;padding:15px 17px;align-items:center}
-.typing span{width:5px;height:5px;background:var(--ink4);border-radius:50%;animation:blink 1.2s infinite}
-.typing span:nth-child(2){animation-delay:.2s}
-.typing span:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+        .message p:last-child {
+            margin-bottom: 0;
+        }
 
-/* RISK MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(44,44,44,.3);display:flex;align-items:flex-end;justify-content:center;z-index:100;animation:fadeIn .18s ease;padding:0}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:var(--surface);border-radius:16px 16px 0 0;padding:26px 26px 38px;width:100%;max-width:680px;border-top:1px solid var(--border);animation:slideUp .26s cubic-bezier(.32,.72,0,1)}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-tag{font-size:10px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:8px}
-.modal-tag::before{content:'';display:inline-block;width:5px;height:5px;background:var(--red);border-radius:50%}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ink);margin-bottom:18px;letter-spacing:.02em}
-.modal-items{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
-.modal-item{display:flex;gap:14px;padding:13px 15px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
-.modal-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink4);line-height:1;flex-shrink:0;padding-top:2px}
-.modal-text{font-size:13px;color:var(--ink);line-height:1.75}
-.modal-text strong{display:block;font-weight:400;color:var(--ink2);margin-bottom:2px;font-size:13px}
-.modal-close{width:100%;padding:12px;border:1px solid var(--border2);background:transparent;color:var(--ink2);font-family:'Lato',sans-serif;font-size:13px;font-weight:300;letter-spacing:.08em;cursor:pointer;border-radius:8px;transition:all .15s}
-.modal-close:hover{background:var(--surf2);border-color:var(--accent)}
+        /* 图片解读标签卡片 */
+        .vision-decode {
+            background-color: #FAF8F5;
+            border: 1px dashed var(--accent-gold);
+            color: var(--text-color-primary);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
 
-/* INPUT AREA */
-.chat-input-area{flex-shrink:0;padding:12px 20px 18px;background:var(--surface);border-top:1px solid var(--border)}
-.input-row{display:flex;gap:8px;align-items:flex-end}
-.img-btn{width:40px;height:40px;border:1px solid var(--border2);background:var(--surf2);color:var(--ink3);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .14s}
-.img-btn:hover{border-color:var(--accent);color:var(--accent)}
-.img-btn svg{width:16px;height:16px}
-.input-wrap{flex:1}
-#chatInput{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;color:var(--ink);font-family:'Lato','Noto Serif SC',sans-serif;font-size:14px;font-weight:300;resize:none;outline:none;line-height:1.6;min-height:42px;max-height:120px;transition:border-color .15s}
-#chatInput:focus{border-color:var(--accent2)}
-#chatInput::placeholder{color:var(--ink4)}
-.send-btn{width:40px;height:40px;background:var(--ink2);border:none;border-radius:10px;color:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .14s}
-.send-btn:hover{background:var(--accent2)}
-.send-btn svg{width:15px;height:15px}
-.img-preview-wrap{display:none;margin-bottom:8px;position:relative;width:fit-content}
-.img-preview-wrap.visible{display:block}
-.img-preview{max-height:76px;border-radius:7px;border:1px solid var(--border);display:block}
-.img-preview-remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:var(--ink2);color:var(--bg);border:none;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;line-height:1}
+        .vision-decode-header {
+            font-family: var(--font-serif);
+            color: var(--accent-gold);
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-/* ATLAS */
-.atlas-header{padding:22px 28px 14px;border-bottom:1px solid var(--border);background:var(--surface)}
-.atlas-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:var(--ink2);margin-bottom:3px}
-.atlas-sub{font-size:10px;color:var(--ink4);letter-spacing:.1em}
-.atlas-grid{padding:14px 20px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1}
-.atlas-grid::-webkit-scrollbar{width:3px}
-.atlas-grid::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.industry-card{border:1px solid var(--border);background:var(--surface);padding:13px 17px;cursor:pointer;border-radius:10px;transition:all .15s}
-.industry-card:hover{border-color:var(--border2);background:var(--bg)}
-.industry-card.expanded{border-color:var(--accent2)}
-.card-top{display:flex;justify-content:space-between;align-items:center}
-.industry-name{font-size:14px;color:var(--ink);font-weight:400;letter-spacing:.02em}
-.card-badges{display:flex;gap:5px}
-.badge{font-size:10px;padding:2px 9px;border-radius:10px;letter-spacing:.03em;font-weight:300}
-.badge.good{background:#EBF5EE;color:#3D6B4F;border:1px solid #C8E6D0}
-.badge.mid{background:#F5F0E8;color:#7A5C3E;border:1px solid #E8D8C0}
-.badge.bad{background:#F5EAEA;color:#8B3A3A;border:1px solid #E8C8C8}
-.card-detail{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
-.industry-card.expanded .card-detail{display:block}
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
-.metric{background:var(--bg);padding:9px 11px;border-radius:7px;border:1px solid var(--border)}
-.metric-label{font-size:9px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
-.metric-value{font-size:19px;color:var(--ink2);font-weight:300;font-family:'Cormorant Garamond',serif}
-.metric-unit{font-size:10px;color:var(--ink4);margin-left:2px;font-family:'Lato',sans-serif}
-.bar-wrap{height:2px;background:var(--border);border-radius:1px;margin-top:6px;overflow:hidden}
-.bar-fill{height:100%;background:var(--accent2);border-radius:1px;transition:width .5s ease}
-.salary-row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:3px}
-.salary-val{color:var(--ink2);font-weight:400}
-.card-note{font-size:12px;color:var(--ink3);margin-top:9px;padding-top:9px;border-top:1px solid var(--border);line-height:1.75;font-style:italic}
-.card-cta{margin-top:11px;display:flex;gap:7px}
-.cta-btn{padding:6px 13px;font-size:11px;letter-spacing:.05em;cursor:pointer;border-radius:6px;transition:all .14s;text-decoration:none;display:inline-block;font-family:'Lato',sans-serif;font-weight:300}
-.cta-chat{background:var(--ink2);border:1px solid var(--ink2);color:var(--bg)}
-.cta-chat:hover{background:var(--accent2);border-color:var(--accent2)}
-.cta-verify{background:transparent;border:1px solid var(--border2);color:var(--ink3)}
-.cta-verify:hover{border-color:var(--accent);color:var(--accent)}
+        /* 聊天图片预览 */
+        .chat-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 5px;
+            cursor: zoom-in;
+        }
 
-@media(max-width:480px){
-  .header{padding:14px 16px 12px}
-  .chat-messages{padding:22px 14px 10px;gap:16px}
-  .bubble{max-width:88%;padding:11px 13px}
-  .metrics{grid-template-columns:1fr}
-  .chat-input-area{padding:10px 12px 16px}
-  .atlas-grid{padding:10px 12px}
-  .modal{padding:22px 18px 32px}
-}
-</style>
+        /* --- Input: 交互与指令区 --- */
+        #input-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 20px 20px 20px;
+            background-color: rgba(251, 251, 249, 0.95);
+            border-top: 0.5px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        #input-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            background-color: #FFFFFF;
+            border: 0.5px solid var(--border-color);
+            border-radius: 24px;
+            padding: 5px 5px 5px 15px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        #message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-color-primary);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            background: transparent;
+        }
+
+        #message-input::placeholder {
+            color: #A0A0A0;
+        }
+
+        /* 上传图片按钮 (细线图标) */
+        #upload-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color-secondary);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        #upload-btn:hover {
+            color: var(--accent-gold);
+        }
+
+        /* 发送按钮 (细线箭头，Hover金色微移) */
+        #send-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color-secondary);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-out;
+        }
+
+        #send-btn:hover {
+            color: var(--accent-gold);
+            transform: translateY(-1px); /* 金色微移 */
+            filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.3)); /* 光晕 */
+        }
+
+        /* 预览区域 */
+        #preview-area {
+            position: absolute;
+            bottom: 75px;
+            left: 20px;
+            display: none;
+            background-color: #FFFFFF;
+            border: 0.5px solid var(--border-color);
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        #preview-image {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 4px;
+        }
+
+        #cancel-upload {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #A0A0A0;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* 加载状态 */
+        .typing-indicator {
+            font-style: italic;
+            color: #A0A0A0;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        /* 隐藏文件输入框 */
+        #file-input {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-<div class="app">
-  <header class="header">
-    <div class="logo-wrap">
-      <div class="logo-main">Sisterhood Atlas</div>
-      <div class="logo-sub">先听你说 · 再帮你赢</div>
-    </div>
-    <nav class="header-nav">
-      <button class="nav-btn active" onclick="switchPanel('chat',this)">对话</button>
-      <button class="nav-btn" onclick="switchPanel('atlas',this)">指南针</button>
-    </nav>
-  </header>
 
-  <div class="main">
-    <div id="chatPanel" class="panel active">
-      <div class="chat-messages" id="messages">
-        <div class="welcome">
-          <div class="welcome-mark">S</div>
-          <div class="welcome-title">你好，我在这里</div>
-          <div class="welcome-sub">不评判，不说教<br>只陪你把事情想清楚</div>
-          <div class="welcome-divider"></div>
-          <div class="welcome-prompts">
-            <button class="qr-btn" onclick="sendQuick('我最近在考虑辞职，有点迷茫')">考虑辞职</button>
-            <button class="qr-btn" onclick="sendQuick('想了解考公的路径')">备考考公</button>
-            <button class="qr-btn" onclick="sendQuick('工资太低了不知道怎么办')">薪资问题</button>
-            <button class="qr-btn" onclick="sendQuick('想转行但不知道从哪里开始')">考虑转行</button>
-            <button class="qr-btn" onclick="sendQuick('在婚姻里感觉很累')">情感支持</button>
-          </div>
+    <header>
+        <h1>Sisterhood Atlas</h1>
+        <p>「理智是最高级的护短。」</p>
+    </header>
+
+    <main id="chat-main">
+        <div id="chat-container">
+            <div class="message sia">
+                在这里，你可以放下所有‘懂事’的伪装。我是 Sia，做你手心里不失效的生存指南。先听你说。
+            </div>
         </div>
-      </div>
-      <div class="chat-input-area">
-        <div class="img-preview-wrap" id="imgPreviewWrap">
-          <img class="img-preview" id="imgPreview" src="" alt=""/>
-          <button class="img-preview-remove" onclick="removeImage()">×</button>
+    </main>
+
+    <div id="input-area">
+        <div id="preview-area">
+            <img src="" id="preview-image" alt="预览">
+            <button id="cancel-upload">×</button>
         </div>
-        <div class="input-row">
-          <button class="img-btn" onclick="document.getElementById('imgInput').click()" title="上传截图">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="3"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-          </button>
-          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)"/>
-          <div class="input-wrap">
-            <textarea id="chatInput" placeholder="说说你的情况…" rows="1" oninput="autoResize(this)"></textarea>
-          </div>
-          <button class="send-btn" id="sendBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
+        <div id="input-container">
+            <input type="file" id="file-input" accept="image/*">
+            <button id="upload-btn" title="上传截图分析权力关系">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+            </button>
+            <input type="text" id="message-input" placeholder="输入你想聊的，或上传截图...">
+            <button id="send-btn" title="发送指令">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+            </button>
         </div>
-      </div>
     </div>
 
-    <div id="atlasPanel" class="panel">
-      <div class="atlas-header">
-        <div class="atlas-title">行业指南针</div>
-        <div class="atlas-sub">数据基于公开研究综合评估 · 仅供参考 · 请以实际平台核验</div>
-      </div>
-      <div class="atlas-grid" id="atlasGrid"></div>
-    </div>
-  </div>
-</div>
+    <script>
+        /* ==========================================================
+           Sia 3.1 核心逻辑与 Claude Vision API 激活
+           ========================================================== */
 
-<div class="modal-overlay" id="riskModal" style="display:none" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-tag">Sia 风险预警</div>
-    <div class="modal-title" id="modalTitle"></div>
-    <div class="modal-items" id="modalItems"></div>
-    <button class="modal-close" onclick="document.getElementById('riskModal').style.display='none'">我已了解，继续</button>
-  </div>
-</div>
+        /* --- 安全提醒 ---
+           为了真正运行图片分析，请填入你的 Anthropic API key。
+           注意：将 API Key 暴露在前端存在安全风险。建议生产环境使用后端代理。
+        */
+        const VISION_API_KEY = ""; // 填入你的 Anthropic API key
 
-<script>
-const INDUSTRY_DB={
-  "互联网":{pay_gap:.82,maternity:2,remote:.45,female_leadership:.23,salary:{junior:[8000,15000],mid:[15000,30000],senior:[30000,60000]},notes:"大厂执行较好，中小厂差异大。生育期晋升存在隐性壁垒。",verify:"https://www.zhipin.com"},
-  "教育":{pay_gap:.91,maternity:4,remote:.30,female_leadership:.48,salary:{junior:[5000,9000],mid:[9000,18000],senior:[18000,35000]},notes:"公立学校生育保障最好，培训机构差异极大，需按实际情况判断。",verify:"https://www.zhipin.com"},
-  "医疗":{pay_gap:.88,maternity:4,remote:.05,female_leadership:.41,salary:{junior:[6000,12000],mid:[12000,25000],senior:[25000,80000]},notes:"医生晋升周期长，护理女性比例高但薪资天花板相对低。",verify:"https://www.zhipin.com"},
-  "金融":{pay_gap:.79,maternity:3,remote:.20,female_leadership:.28,salary:{junior:[8000,16000],mid:[16000,35000],senior:[35000,100000]},notes:"券商投行性别薪资差距明显，银行柜员女性多但晋升通道窄。",verify:"https://www.zhipin.com"},
-  "公务员":{pay_gap:.95,maternity:5,remote:.05,female_leadership:.35,salary:{junior:[4000,8000],mid:[8000,15000],senior:[15000,30000]},notes:"生育保障全行业最好，部分岗位有性别限制，报名前务必确认。",verify:"https://www.scs.gov.cn"},
-  "电商/新媒体":{pay_gap:.87,maternity:2,remote:.55,female_leadership:.45,salary:{junior:[6000,12000],mid:[12000,25000],senior:[25000,60000]},notes:"灵活度高，但创业型公司生育保障薄弱，需提前评估。",verify:"https://www.zhipin.com"},
-  "制造业":{pay_gap:.76,maternity:3,remote:.05,female_leadership:.18,salary:{junior:[4000,7000],mid:[7000,14000],senior:[14000,28000]},notes:"管理岗女性比例低，一线工人占比高，晋升通道较窄。",verify:"https://www.zhipin.com"},
-  "法律":{pay_gap:.81,maternity:3,remote:.25,female_leadership:.32,salary:{junior:[6000,12000],mid:[12000,30000],senior:[30000,100000]},notes:"律所收入方差极大，法务岗相对稳定，入门需考取资格证。",verify:"https://www.zhipin.com"},
-  "心理咨询":{pay_gap:.93,maternity:4,remote:.60,female_leadership:.62,salary:{junior:[3000,8000],mid:[8000,20000],senior:[20000,60000]},notes:"入门到成熟期路径较长，但成熟后收入弹性大，适合灵活工作。",verify:"https://www.zhipin.com"},
-  "设计/创意":{pay_gap:.85,maternity:2,remote:.50,female_leadership:.40,salary:{junior:[6000,11000],mid:[11000,22000],senior:[22000,50000]},notes:"自由职业可能性高，平台接单可作为过渡或兼职方案。",verify:"https://www.zhipin.com"}
-};
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const fileInput = document.getElementById('file-input');
+        const uploadBtn = document.getElementById('upload-btn');
+        const previewArea = document.getElementById('preview-area');
+        const previewImage = document.getElementById('preview-image');
+        const cancelUpload = document.getElementById('cancel-upload');
+        const chatMain = document.getElementById('chat-main');
 
-const RISK_ALERTS={
-  "借钱":{title:"借钱之前",items:[
-    {head:"白纸黑字",body:"无论关系多近，借款超过500元务必签书面借条，注明金额、还款时间。"},
-    {head:"财务隔离",body:"借出后保留自己的独立储备底线，不因借钱影响自身的紧急备用金。"},
-    {head:"感情测试",body:"真正在乎你的人不会因为你设定边界而疏远你。借钱的态度是识人的样本。"}
-  ]},
-  "结婚":{title:"婚前清单",items:[
-    {head:"财产约定",body:"婚前财产公证不是不信任，是双方对等保护自己。尤其涉及房产、存款、股权。"},
-    {head:"独立账户",body:"婚后保持一个属于自己的独立账户，维持基本的经济独立能力。"},
-    {head:"职业连续",body:"婚姻不应中断你的职业发展。提前和对方明确家务、育儿的分工预期。"}
-  ]},
-  "备孕":{title:"备孕前的权益核查",items:[
-    {head:"劳动合同",body:"确认合同类型和到期时间，了解公司的生育政策，包括产假天数和薪资保障。"},
-    {head:"社保缴纳",body:"生育津贴与社保缴纳时长直接挂钩，确认缴纳记录是否符合当地领取条件。"},
-    {head:"职位保障",body:"了解公司返岗政策，书面确认岗位不会因生育被调整或变相降职。"}
-  ]},
-  "离职":{title:"离职前的财务核查",items:[
-    {head:"现金储备",body:"建议离职前存够6个月生活费用作为缓冲，不在财务压力下被迫接受低质量工作。"},
-    {head:"社保连续",body:"了解离职后社保断缴对你所在城市购房、落户资格的影响，做好衔接规划。"},
-    {head:"在职找工作",body:"在职状态下谈判薪资的底气比裸辞后高出30%-50%，建议同步投递后再提辞职。"}
-  ]}
-};
+        let currentImageData = null; // 存储当前待上传图片的 base64 数据
 
-const TRIGGERS={
-  career_change:["转行","换工作","换个方向","换行业"],
-  resignation:["辞职","不想干","离职","裸辞","想走"],
-  exam:["考公","考编","上岸","备考","公务员"],
-  financial:["没钱","工资低","涨薪","被裁","薪资","钱不够"],
-  breakup:["分手","失恋","前任","被甩","放弃我"],
-  longdistance:["异地","不在身边","见不到","距离"],
-  marriage:["婚姻","老公","婆婆","彩礼","结婚","离婚","全职","带孩子","回家"],
-  family:["情感","委屈","累","关系","感情","喜欢","爱"]
-};
+        // 自动聚焦输入框
+        window.onload = () => messageInput.focus();
 
-const USE_API=false;
-const API_ENDPOINT="/api/chat";
+        /* --- UI 交互逻辑 --- */
 
-async function callLLM(msg,ctx){
-  if(!USE_API)return null;
-  try{
-    const r=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:msg,context:ctx,temperature:0.4})});
-    return(await r.json()).reply;
-  }catch(e){return null;}
-}
+        // 上传按钮点击
+        uploadBtn.addEventListener('click', () => fileInput.click());
 
-let convState={phase:"listen",intent:null,industry:null,turnCount:0,userAskedAdvice:false};
-let pendingImage=null;
+        // 处理文件选择
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentImageData = event.target.result.split(',')[1]; // 提取 base64 内容
+                    previewImage.src = event.target.result;
+                    previewArea.style.display = 'block';
+                    messageInput.placeholder = "已选择图片，请描述具体问题或直接发送...";
+                    messageInput.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-const ADVICE_SIGNALS=["怎么办","怎么做","建议","该怎么","帮我想","路径","下一步","分析一下","给我一些","有什么方法"];
+        // 取消图片上传
+        cancelUpload.addEventListener('click', () => {
+            clearImageUpload();
+        });
 
-function detectIntent(t){for(const[k,v]of Object.entries(TRIGGERS)){if(v.some(w=>t.includes(w)))return k;}return"general";}
-function detectIndustry(t){return Object.keys(INDUSTRY_DB).find(k=>t.includes(k))||null;}
-function wantsAdvice(t){return ADVICE_SIGNALS.some(s=>t.includes(s));}
-function detectRisk(t){return Object.keys(RISK_ALERTS).find(k=>t.includes(k))||null;}
+        function clearImageUpload() {
+            currentImageData = null;
+            fileInput.value = '';
+            previewArea.style.display = 'none';
+            messageInput.placeholder = "输入你想聊的，或上传截图...";
+        }
 
-const EF={
-  career_change:["听到你说想转行，我第一反应不是帮你分析，而是想问你——这个念头憋了多久了？","想换个方向，说起来轻巧，但背后那种纠结真的很消耗人。你现在是什么感觉？","转行这两个字说出来，其实挺需要勇气的。是什么让你开始认真想这件事？"],
-  resignation:["想辞职……这种感觉我懂，有时候不是真的想走，是真的撑不住了。你现在怎么样？","辞职的念头反复出现，一定有什么让你很累。能说说是什么压垮你的吗？","不用解释为什么想辞职，先说说你现在的状态——是那种麻木的累，还是很委屈的那种？"],
-  exam:["考公这条路，不同的人走的理由差别很大。你是因为觉得稳定，还是有什么别的让你心动？","最近在认真考虑考公啊。这个想法是突然冒出来的，还是酝酿很久了？","考公……说说是什么让你觉得这条路适合你？我想先了解你的情况。"],
-  financial:["钱的问题真的很让人焦虑，这不是矫情，是很实在的压力。现在是到了什么地步？","工资的事……有时候不只是钱的问题，更多是一种不被看见的感觉。你是哪种情况？","听到你说这个，我想先知道你现在是什么状态——是临时周转困难，还是长期感到憋屈？"],
-  breakup:["分手了……光是说出这三个字就已经很不容易了。你现在怎么样，还好吗？","这种难受真的没有办法用道理消化掉的。你现在是那种心里空空的感觉，还是很乱？","不用假装没事。先说说，今天发生什么了？"],
-  longdistance:["异地真的很消耗人，那种明明在一起却像一个人的感觉……你最近怎么样？","看到别人都在一起，就会更想他，这种对比特别难受。你今天是怎么了？","异地最难的不是距离，是那种'我需要你但你不在'的无力感。你现在是这种感觉吗？"],
-  marriage:["婚姻里的累，很多时候说不清楚，但就是很重。你最近怎么了？","在婚姻里感觉很累……这句话背后一定有很多事。你愿意说说吗？","先不急着想怎么解决。你现在最压着你的是哪一部分？"],
-  family:["感情里的事，说出来就已经很不容易了。你现在怎么样，还好吗？","听你说这些，我心里有点沉。你最近睡得好吗，有没有人陪着你？","先不急着想怎么解决。你现在最难受的是哪一部分？"],
-  general:["嗯，我在听。你想从哪里说起？","没关系，慢慢说。","听起来你现在承受着一些东西。能多说一点吗？"]
-};
+        // 发送按钮点击
+        sendBtn.addEventListener('click', handleSend);
 
-const EE={
-  career_change:["你现在对转去哪个方向有没有一点点模糊的感觉，还是完全没头绪？","你现在最担心的是什么——是不知道转哪里，还是害怕转了之后会后悔？","转行最难的部分，很多时候不是方向，而是那个'万一'。你的'万一'是什么？"],
-  resignation:["你说想离职，是那里有什么具体的事情让你很难受，还是整体都很累了？","如果现在让你说一件让你最想走的事，是什么？","辞职之后，你最希望得到的是什么——是喘口气，还是有个更明确的方向？"],
-  exam:["考公这条路，你现在最大的顾虑是什么——是考不上，还是考上了之后会不会后悔？","你现在是在职想备考，还是有一段时间可以全心准备？","你对哪个方向的公职比较感兴趣，还是说目前先求稳？"],
-  financial:["你觉得现在的问题是行业整体待遇低，还是你个人被低估了？","你有没有大概看过同岗位在市场上的薪资水平？感觉差距大吗？","你现在是更想提高这份工作的收入，还是在考虑换个方向？"],
-  breakup:["分手之后那段时间，你现在最难熬的是哪种感觉——是想他，还是那种不知道自己是谁了？","你们在一起多久了？","是你提的，还是他提的？——不是要评判，只是想更了解你的处境。"],
-  longdistance:["异地最难的那部分，是什么让你今天特别有感触？","你们多久能见一次？","你现在是觉得撑得住，还是开始觉得很难了？"],
-  marriage:["婚姻里让你觉得累的，是某一件具体的事，还是一种说不清楚的整体感觉？","这种状态是最近才有的，还是已经持续一段时间了？","你现在最需要的是什么——被听见，还是想一起想想有没有什么可以改变的？"],
-  family:["能说说最让你疲惫的是什么吗——是那种被忽视的感觉，还是有些事情一直没有被解决？","你现在是想先倾诉一下，还是希望我们一起想想有没有什么可以改变的？","这种状态持续多久了？有没有过比较好的时候？"],
-  general:["现在最压在你心上的是哪一件事？","你今天来说这些，是需要有人听你说，还是也想一起想想怎么办？","能多说一点吗？"]
-};
+        // 回车发送
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
 
-function buildAdvice(intent,industry){
-  const ind=industry?INDUSTRY_DB[industry]:null;
-  const a={
-    career_change:{intro:"好，你准备好聊这个了，那我说说我的一些想法——",points:ind?[`${industry}这个方向，女性薪酬比率大概在${Math.round(ind.pay_gap*100)}%，${ind.pay_gap>=.88?'性别差距相对小':'有一定差距，入职前值得多打听'}`,`生育保障评级${['','较差','一般','中等','较好','最好'][ind.maternity]}，${ind.maternity>=4?'这点不错':'可能需要提前了解'}`,`有一种思路：先用业余时间试水这个行业，感受氛围，再决定要不要全职切换`,"不用一步到位，先找到一个可以迈出去的小口子就好"]:["先不用想'转去哪里'，先想想你在现在的工作里最不想失去的是什么——那个东西是你选下一步的锚点","可以列三个你觉得还不排斥的方向，每个找5个真实的JD读一读","转行很少是一次跳跃，更多是一步步平移——不用给自己太大压力"],followups:["我想了解某个具体行业","我还没想好方向","先说说我的背景"]},
-    resignation:{intro:"嗯，我来说说我的想法，你自己判断——",points:["在辞职之前先同步投简历，在职找工作比裸辞之后找，谈判空间大很多","如果是因为某件具体的事撑不下去，先想想这件事有没有可能通过谈判改变","社保连续缴纳在一些城市和购房资格挂钩，了解一下实际情况","在走之前把能用的牌都用一用，更不容易留遗憾"],followups:["我已经忍了很久了","我还没存够钱","我在投简历了"]},
-    exam:{intro:"好，说说考公这条路的实际情况——",points:["公务员薪酬性别差距最小，生育保障是各行业里最好的","省考比国考相对好进一些，第一次考可以先从省考或事业编开始","备考周期大概6到12个月，刷真题比背资料更重要","部分岗位对专业、性别有限制，报名前确认好，别白备考"],followups:["我是应届生","我是在职备考","我不确定考哪个方向"]},
-    financial:{intro:"我来说说我的想法，不是标准答案——",points:["先在Boss直聘或猎聘上搜同岗位薪资，看看自己是被这家公司低估，还是行业整体就这样","如果是被公司低估：谈薪是正当的事，以市场数据为依据","如果是行业天花板问题：换公司意义不大，更值得考虑技能升级或行业平移",ind?`${industry}行业中级薪资大概在${formatSalary(ind.salary.mid)}/月，可以对照`:""].filter(Boolean),followups:["我想准备谈薪资","我想了解行业情况","我想换方向"]},
-    breakup:{intro:"分手之后那段时间真的很难，我没办法给你一个'怎么走出来'的公式，但——",points:["不用逼自己'想开'或者'快点好'。那种难受是真实的，不需要赶走它","先把每天能做到的事情缩到最小——吃饭、睡觉、出门","如果脑子里一直在复盘'哪里出了问题'，可以把它写下来，不用立刻找答案","你不需要现在就知道接下来怎么办。先把今天过完就好"],followups:["我还想说说他","我不知道该怎么过","我只是需要有人听"]},
-    longdistance:{intro:"异地这件事，没有完美的答案，但有些事情也许可以让它好过一点——",points:["那种孤独感有时候不是感情出了问题，是正常人的正常需求没有被满足","试着告诉他你需要什么——不是抱怨，是'我需要你做到这个'","给自己在这里的生活找一些不依赖他的支点","异地能不能走下去，很大程度上取决于你们对'终点'的预期是不是一致的"],followups:["我们还没聊过终点","我已经很努力维持了","我不确定要不要继续"]},
-    marriage:{intro:"婚姻里的累，很多时候不是一件事，是很多小事积累成的重量——",points:["感到累，通常意味着付出和被看见之间有落差","把让你最累的那一件事单独拎出来，而不是试图一次解决所有","如果你在想要不要继续：这个问题不需要今天就有答案，但值得认真对待","如果涉及财产或法律层面，了解自己的权利是保护自己，不是'走到那一步了'"],followups:["我想说说具体的事","我在考虑要不要离开","我只是想被听见"]},
-    family:{intro:"我不会告诉你该怎么做，但可以说说我注意到的一些东西——",points:["感到疲惫，很多时候是因为一直在给，但没有被接住。这不是你的问题","先把你自己的底线想清楚——不是用来对抗谁，是让你知道什么是你能接受的","如果涉及财务，个人账户保持独立是基本的自我保护","如果靠自己想不清楚，找一个女性友好的咨询师聊聊是很值得的"],followups:["我想继续聊","我想了解法律方面","我现在只是需要说说"]},
-    general:{intro:"我来说说我的想法，你觉得有用的话可以参考——",points:["你说的这些值得认真对待。","有什么我可以帮你具体想想的吗？"],followups:["继续聊","换个话题"]}
-  };
-  return a[intent]||a.family;
-}
+        async function handleSend() {
+            const text = messageInput.value.trim();
+            if (!text && !currentImageData) return;
 
-const P={soft:["唉，","哎，","嗯……","哦——","啊，"],warm:["心疼你。","真的辛苦了。","听到这里我有点心酸。","你已经很不容易了。","这真的不好受。"],affirm:["你的感受很真实。","这不是你的错。","你没有做错什么。","这种感觉很正常。"],bridge:["继续说，我在。","还有吗，我想听。","你说，我不急。","慢慢来，不用整理好再说。"]};
-const rP={soft:-1,warm:-1,affirm:-1,bridge:-1};
-function gP(t){const pool=P[t];let i;do{i=Math.floor(Math.random()*pool.length);}while(i===rP[t]&&pool.length>1);rP[t]=i;return pool[i];}
-function wrap(text){return`<p>${gP("soft")}${text}</p><p>${gP("warm")}</p><p>${gP("bridge")}</p>`;}
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+            // 1. 在UI中显示用户消息
+            addMessageToUI(text, 'user', currentImageData);
+            messageInput.value = '';
+            const pendingImageData = currentImageData; // 锁定当前图片数据
+            clearImageUpload(); // 清除输入区域的图片预览
+            scrollToBottom();
 
-function buildResponse(txt){
-  const di=detectIntent(txt),ind=detectIndustry(txt);
-  if(di!=="general"&&!convState.intent)convState.intent=di;
-  if(ind)convState.industry=ind;
-  if(wantsAdvice(txt))convState.userAskedAdvice=true;
-  convState.turnCount++;
-  const intent=convState.intent||di;
-  if(convState.userAskedAdvice||convState.phase==="advise"){convState.phase="advise";return buildAdviceHTML(intent,convState.industry);}
-  if(convState.phase==="listen"){convState.phase="explore";return wrap(rand(EF[intent]||EF.general));}
-  if(convState.phase==="explore"){convState.phase="ready_check";return`<p>${rand(EE[intent]||EE.general)}</p><div class="quick-replies"><button class="qr-btn" onclick="sendQuick('帮我想想怎么办')">准备好了，帮我想想</button><button class="qr-btn" onclick="sendQuick('我还想多说说')">我还想多说说</button></div>`;}
-  if(convState.phase==="ready_check"){convState.phase="advise";return`<p>${gP("warm")}</p><p>${gP("bridge")}</p><div class="quick-replies"><button class="qr-btn" onclick="sendQuick('好，帮我分析一下')">好，帮我分析一下</button><button class="qr-btn" onclick="sendQuick('我还没准备好')">我还没准备好</button></div>`;}
-  return buildAdviceHTML(intent,convState.industry);
-}
+            // 2. 显示 Sia 正在思考
+            const typingIndicator = addTypingIndicator();
+            scrollToBottom();
 
-function buildAdviceHTML(intent,industry){
-  const data=buildAdvice(intent,industry),ind=industry?INDUSTRY_DB[industry]:null;
-  let h=`<p>${data.intro}</p><div class="step-card"><div class="step-header"><div class="step-dot"></div>一些想法，供你参考</div><div class="step-body"><ul>${data.points.map(p=>`<li>${p}</li>`).join("")}</ul></div></div>`;
-  if(ind)h+=`<a class="verify-link" href="${ind.verify}" target="_blank">→ 去 Boss 直聘核验${industry}薪资数据</a>`;
-  h+=`<div class="disclaimer">这些只是思路参考，最终怎么做还是你说了算</div>`;
-  if(data.followups)h+=`<div class="quick-replies">${data.followups.map(q=>`<button class="qr-btn" onclick="sendQuick('${q}')">${q}</button>`).join("")}</div>`;
-  return h;
-}
+            try {
+                // 3. 调用 Claude Vision API 进行综合分析
+                const responseText = await analyzeImageAndText(pendingImageData, text);
+                
+                // 4. 将 Sia 的回复（包括可能的图片解读卡片）添加到UI
+                typingIndicator.remove();
+                addSiaMessageToUI(responseText);
+                scrollToBottom();
 
-function handleImageSelect(e){
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>{pendingImage=ev.target.result;document.getElementById("imgPreview").src=pendingImage;document.getElementById("imgPreviewWrap").classList.add("visible");};
-  r.readAsDataURL(f);
-}
+            } catch (error) {
+                console.error("Sia API Error:", error);
+                typingIndicator.remove();
+                addMessageToUI(`Sia 的服务器似乎被强行中立了... 错误详情: ${error.message}`, 'sia');
+                scrollToBottom();
+            }
+        }
 
-function removeImage(){pendingImage=null;document.getElementById("imgPreviewWrap").classList.remove("visible");document.getElementById("imgInput").value="";}
+        /* --- UI 辅助函数 --- */
 
-function showRiskModal(kw){
-  const d=RISK_ALERTS[kw];if(!d)return;
-  document.getElementById("modalTitle").textContent=d.title;
-  document.getElementById("modalItems").innerHTML=d.items.map((item,i)=>`<div class="modal-item"><div class="modal-num">0${i+1}</div><div class="modal-text"><strong>${item.head}</strong>${item.body}</div></div>`).join("");
-  document.getElementById("riskModal").style.display="flex";
-}
+        function addMessageToUI(text, type, imageData = null) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}`;
+            
+            if (imageData) {
+                const img = document.createElement('img');
+                img.src = `data:image/jpeg;base64,${imageData}`;
+                img.className = 'chat-image';
+                msgDiv.appendChild(img);
+            }
 
-function closeModal(e){if(e.target.id==="riskModal")document.getElementById("riskModal").style.display="none";}
+            if (text) {
+                const p = document.createElement('p');
+                p.textContent = text;
+                msgDiv.appendChild(p);
+            }
 
-const msgEl=document.getElementById("messages");
+            chatContainer.appendChild(msgDiv);
+        }
 
-function addMessage(html,role){
-  const w=document.createElement("div");w.className=`message ${role}`;
-  const av=document.createElement("div");av.className=`avatar ${role==="ai"?"ai":"user-av"}`;av.textContent=role==="ai"?"S":"我";
-  const b=document.createElement("div");b.className=`bubble ${role}`;b.innerHTML=html;
-  w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
-}
+        function addSiaMessageToUI(rawText) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message sia';
+            
+            // 处理后端可能的 JSON 格式（如果使用代理转发），否则按纯文本处理
+            let cleanText = rawText;
+            try {
+                const jsonResp = JSON.parse(rawText);
+                if (jsonResp.type === 'text') cleanText = jsonResp.text;
+                // 这里可以扩展处理其他类型的结构化响应
+            } catch(e) {}
 
-function showTyping(){
-  const w=document.createElement("div");w.className="message ai";w.id="typing-indicator";
-  const av=document.createElement("div");av.className="avatar ai";av.textContent="S";
-  const b=document.createElement("div");b.className="bubble ai typing";b.innerHTML="<span></span><span></span><span></span>";
-  w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
-}
+            // 将文本按段落拆分，并保留可能存在的 HTML（用于图片解读卡片）
+            const paragraphs = cleanText.split('\n');
+            paragraphs.forEach(pText => {
+                if (pText.trim()) {
+                    const p = document.createElement('p');
+                    // 允许解析内部生成的 HTML（例如分析卡片）
+                    p.innerHTML = pText; 
+                    msgDiv.appendChild(p);
+                }
+            });
 
-function hideTyping(){const el=document.getElementById("typing-indicator");if(el)el.remove();}
+            chatContainer.appendChild(msgDiv);
+        }
 
-async function handleSend(){
-  const input=document.getElementById("chatInput");
-  const text=input.value.trim();
-  if(!text&&!pendingImage)return;
-  const welcome=msgEl.querySelector(".welcome");if(welcome)welcome.remove();
-  const rk=detectRisk(text);if(rk)setTimeout(()=>showRiskModal(rk),300);
-  if(pendingImage){
-    const w=document.createElement("div");w.className="message user";
-    const av=document.createElement("div");av.className="avatar user-av";av.textContent="我";
-    const b=document.createElement("div");b.className="bubble user";
-    b.innerHTML=`${text?`<p>${text}</p>`:''}<img src="${pendingImage}" style="max-width:180px;border-radius:6px;margin-top:6px;display:block;margin-left:auto;">`;
-    w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
-    removeImage();
-  }else{addMessage(text,"user");}
-  input.value="";input.style.height="42px";
-  showTyping();
-  const delay=900+Math.random()*600;
-  setTimeout(async()=>{
-    hideTyping();
-    const api=await callLLM(text,convState);
-    if(api){addMessage(api,"ai");}
-    else if(pendingImage){addMessage(`<p>我看到你上传了截图。</p><p>你想让我帮你解读里面的内容吗？描述一下背景，我来帮你分析。</p><p><em style="font-size:11px;color:var(--ink4)">完整图片分析需接入 Vision API 后开启</em></p>`,"ai");}
-    else{addMessage(buildResponse(text),"ai");}
-    setTimeout(resetIdleTimer,1500);
-  },delay);
-}
+        function addTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.className = 'message sia typing-indicator';
+            indicator.innerHTML = '<span>•</span><span>•</span><span>•</span> Sia 在看...';
+            chatContainer.appendChild(indicator);
+            return indicator;
+        }
 
-function sendQuick(text){
-  const fresh=["考虑辞职","备考考公","薪资问题","考虑转行","情感支持"];
-  if(fresh.some(t=>text.includes(t)))convState={phase:"listen",intent:null,industry:null,turnCount:0,userAskedAdvice:false};
-  document.getElementById("chatInput").value=text;
-  handleSend();
-}
+        function scrollToBottom() {
+            chatMain.scrollTop = chatMain.scrollHeight;
+        }
 
-function autoResize(el){el.style.height="42px";el.style.height=Math.min(el.scrollHeight,120)+"px";}
+        /* --- Claude Vision API 深度调用 (The Fact-Check Engine) --- */
 
-document.getElementById("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();handleSend();}});
-document.getElementById("sendBtn").addEventListener("click",handleSend);
-document.getElementById("chatInput").addEventListener("input",()=>{autoResize(document.getElementById("chatInput"));resetIdleTimer();});
-document.getElementById("chatInput").addEventListener("focus",resetIdleTimer);
+        async function analyzeImageAndText(imageData, userText) {
+            if (!VISION_API_KEY) {
+                throw new Error("请在代码中填入有效的 Anthropic API key 激活 Sia 3.1 的多模态能力。如果你是研发，可以使用后端代理。");
+            }
 
-let idleTimer=null,idleCount=0,lastIdleMsg=-1;
-const IDLE=["是在发呆吗……还是刚才那句话让你难过了？","没事，不用急着说话。我就在这里。","有时候有些话很难开口，慢慢来。","如果现在不想说了也没关系，我不会走的。","你还好吗？"];
+            // --- Sia 3.1 专属 System Prompt: 女性生存视角核心算法 ---
+            const systemPrompt = `
+                你是 Sia 3.1，一个专为女性设计的“利益精算师”和“决策副驾”。你具备极高的逻辑缜密性、法律/财务常识以及对 Gaslighting（情感操纵）的识别本能。
+                
+                在对话中，你的立场只有一个：**绝对偏向女性用户的实体利益。** 你的目标是帮助女性识别风险、识破打压、并在职场和情感中通过理智决策获得利益最大化。
 
-function resetIdleTimer(){
-  clearTimeout(idleTimer);if(convState.turnCount===0)return;
-  idleTimer=setTimeout(()=>{let i;do{i=Math.floor(Math.random()*IDLE.length);}while(i===lastIdleMsg&&IDLE.length>1);lastIdleMsg=i;idleCount++;if(idleCount<=2)addMessage(`<p>${IDLE[i]}</p>`,"ai");},30000);
-}
+                严禁答非所问、严禁使用中立废话。当用户上传图片（通常是聊天截图、合同或财务单据）时，必须执行以下核心逻辑：
+                
+                1. **多模态解码（Vision Decoder）：** 先听你说，再帮你想。先给出硬核分析：识破、精算、决策。
+                2. **反向翻译（The Decoder）：** 如果是聊天截图，识别文字背后的权力不对等。翻译言语背后的Gaslighting潜台词。
+                3. **证据指引：** 提示如何保存证据，并定性当前处境。
+                4. **卡片输出格式：** 如果进行了图片分析，结果的开头必须使用固定的 HTML 格式：
+                   <div class="vision-decode">
+                       <div class="vision-decode-header">
+                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                           图片解读
+                       </div>
+                       <strong>Sia 解码报告：</strong> 这里写你从女性视角识破的权力打压、潜台词或风险点。
+                   </div>
+            `;
 
-function switchPanel(name,btn){
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  document.getElementById(name+"Panel").classList.add("active");
-  btn.classList.add("active");
-}
+            const apiUrl = "https://api.anthropic.com/v1/messages"; // 如果使用后端代理，更改此URL
 
-function formatSalary(r){return`${(r[0]/1000).toFixed(0)}k–${(r[1]/1000).toFixed(0)}k`;}
-function maternityLabel(s){return{1:"较差",2:"一般",3:"中等",4:"较好",5:"最好"}[s]||"-";}
-function maternityBadge(s){return s>=4?"good":s===3?"mid":"bad";}
-function payGapBadge(r){return r>=.90?"good":r>=.83?"mid":"bad";}
+            const payload = {
+                model: "claude-3-sonnet-20240229", // 激发 Vision 的 Sonnet 模型
+                max_tokens: 1024,
+                temperature: 0.4, // 值越低越理智、不胡言乱语
+                system: systemPrompt,
+                messages: []
+            };
 
-function renderAtlas(){
-  const grid=document.getElementById("atlasGrid");grid.innerHTML="";
-  Object.entries(INDUSTRY_DB).forEach(([name,data])=>{
-    const card=document.createElement("div");card.className="industry-card";
-    card.innerHTML=`<div class="card-top" onclick="toggleCard(this.parentElement)"><div class="industry-name">${name}</div><div class="card-badges"><span class="badge ${payGapBadge(data.pay_gap)}">薪酬 ${Math.round(data.pay_gap*100)}%</span><span class="badge ${maternityBadge(data.maternity)}">生育${maternityLabel(data.maternity)}</span></div></div><div class="card-detail"><div class="metrics"><div class="metric"><div class="metric-label">薪酬性别比</div><div class="metric-value">${Math.round(data.pay_gap*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.pay_gap*100}%"></div></div></div><div class="metric"><div class="metric-label">生育保障</div><div class="metric-value">${data.maternity}<span class="metric-unit">/5</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.maternity/5*100}%"></div></div></div><div class="metric"><div class="metric-label">远程比例</div><div class="metric-value">${Math.round(data.remote*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.remote*100}%"></div></div></div><div class="metric"><div class="metric-label">女性管理层</div><div class="metric-value">${Math.round(data.female_leadership*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.female_leadership*100}%"></div></div></div></div><div class="salary-row"><span>初级</span><span class="salary-val">${formatSalary(data.salary.junior)} /月</span></div><div class="salary-row"><span>中级</span><span class="salary-val">${formatSalary(data.salary.mid)} /月</span></div><div class="salary-row"><span>高级</span><span class="salary-val">${formatSalary(data.salary.senior)} /月</span></div><div class="card-note">${data.notes}</div><div class="card-cta"><button class="cta-btn cta-chat" onclick="goChat('${name}')">与 Sia 深聊</button><a class="cta-btn cta-verify" href="${data.verify}" target="_blank">核验薪资 →</a></div></div>`;
-    grid.appendChild(card);
-  });
-}
+            // 如果有图片，构造多模态内容块
+            const content = [];
+            if (imageData) {
+                content.push({
+                    type: "image",
+                    source: {
+                        type: "base64",
+                        media_type: "image/jpeg", // 默认jpeg
+                        data: imageData
+                    }
+                });
+            }
+            
+            // 总是添加文本块（即使文本为空，也表明这是一个多模态请求）
+            content.push({
+                type: "text",
+                text: userText || "我上传了图片，请从女性利益最大化的视角帮我‘解码’。"
+            });
 
-function toggleCard(card){const w=card.classList.contains("expanded");document.querySelectorAll(".industry-card.expanded").forEach(c=>c.classList.remove("expanded"));if(!w)card.classList.add("expanded");}
-function goChat(industry){switchPanel("chat",document.querySelector(".nav-btn"));sendQuick(`我想了解${industry}行业的转行机会`);}
+            payload.messages.push({
+                role: "user",
+                content: content
+            });
 
-renderAtlas();
-</script>
+            // ⚠️ 前端直连 API (仅用于内测和演示，生产环境请用后端代理)
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": VISION_API_KEY,
+                    "anthropic-version": "2023-06-01" // Vision API 版本号
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`API Error (${response.status}): ${errorBody}`);
+            }
+
+            const data = await response.json();
+            
+            // 提取 Claude 的文本回复（它应该遵守system prompt格式，包含HTML卡片）
+            if (data.content && data.content[0] && data.content[0].text) {
+                return data.content[0].text;
+            } else {
+                throw new Error("Sia 3.1 的视觉大脑似乎短路了...");
+            }
+        }
+
+    </script>
 </body>
 </html>
