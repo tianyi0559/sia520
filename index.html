@@ -3,29 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sia 3.1 | Sisterhood Atlas - 先听你说 · 再帮你想</title>
+    <title>Sia 3.11 | Sisterhood Atlas - 先听你说 · 再帮你想</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* --- Sia 3.1 智感清冷美学定义 (Silent Luxury UI) --- */
         :root {
-            --bg-color: #FBFBF9; /* 羊脂玉色 - 呼吸感背景 */
-            --sia-bubble-bg: #FFFFFF; /* Sia气泡 - 纯净专业 */
-            --user-bubble-bg: #F1ECE3; /* 用户气泡 - 暖金微光 */
-            --text-color-primary: #2C2C2C; /* 深炭灰 - 高级阅读体验 */
-            --text-color-secondary: #6A6A6A; /* 灰陶色 - 副标题 */
-            --border-color: #E5E5E0; /* 极细边框 */
-            --accent-gold: #D4AF37; /* 古铜金 - 交互高光 */
-            --shadow-subtle: 0 4px 24px rgba(0,0,0,0.02); /* 极淡阴影 - 浮动感 */
+            --bg-color: #FBFBF9;
+            --sia-bubble-bg: #FFFFFF;
+            --user-bubble-bg: #F1ECE3;
+            --text-color-primary: #2C2C2C;
+            --text-color-secondary: #6A6A6A;
+            --border-color: #E5E5E0;
+            --accent-gold: #D4AF37;
+            --shadow-subtle: 0 4px 24px rgba(0,0,0,0.02);
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Noto Sans SC', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: var(--font-sans);
@@ -39,9 +33,9 @@
             font-weight: 300;
         }
 
-        /* --- Header: 品牌灵魂区 --- */
+        /* Header: 指南针 Logo 回归 */
         header {
-            padding: 20px 25px;
+            padding: 25px 25px 15px 25px;
             background-color: rgba(251, 251, 249, 0.95);
             border-bottom: 0.5px solid var(--border-color);
             backdrop-filter: blur(10px);
@@ -52,29 +46,33 @@
             text-align: center;
         }
 
+        .compass-logo {
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
         header h1 {
             font-family: var(--font-serif);
             font-weight: 600;
-            font-size: 24px;
-            letter-spacing: 1px;
+            font-size: 22px;
+            letter-spacing: 1.5px;
             color: var(--text-color-primary);
+            text-transform: uppercase;
         }
 
         header p {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-color-secondary);
-            margin-top: 4px;
-            letter-spacing: 0.5px;
-            font-style: italic;
+            margin-top: 6px;
+            letter-spacing: 1px;
         }
 
-        /* --- Chat Main: 对话核心区 --- */
+        /* Chat Container */
         main {
             flex: 1;
-            padding: 100px 20px 100px 20px; /* 为Header和Input留出空间 */
+            padding: 140px 20px 100px 20px;
             overflow-y: auto;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
         }
 
         #chat-container {
@@ -82,83 +80,66 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
-        /* 气泡通用样式 */
         .message {
-            max-width: 80%;
-            padding: 12px 16px;
+            max-width: 85%;
+            padding: 14px 18px;
             border-radius: 12px;
             font-size: 14px;
-            position: relative;
             box-shadow: var(--shadow-subtle);
             border: 0.5px solid var(--border-color);
+            animation: fadeIn 0.4s ease-out;
         }
 
-        /* Sia 气泡: 左圆右方角 */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
         .message.sia {
             align-self: flex-start;
             background-color: var(--sia-bubble-bg);
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 2px;
         }
 
-        /* 用户气泡: #F1ECE3 暖金，黑字 */
         .message.user {
             align-self: flex-end;
             background-color: var(--user-bubble-bg);
-            border-bottom-right-radius: 4px;
-            border: none; /* 用户气泡无需边框 */
+            border-bottom-right-radius: 2px;
+            border: none;
         }
 
-        .message p {
-            margin-bottom: 8px;
-        }
-
-        .message p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* 图片解读标签卡片 */
-        .vision-decode {
+        /* 导流卡片样式 */
+        .lock-card {
             background-color: #FAF8F5;
             border: 1px dashed var(--accent-gold);
-            color: var(--text-color-primary);
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             margin-top: 10px;
-            font-size: 13px;
         }
 
-        .vision-decode-header {
+        .lock-header {
             font-family: var(--font-serif);
             color: var(--accent-gold);
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            text-transform: uppercase;
         }
 
-        /* 聊天图片预览 */
-        .chat-image {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            margin-top: 5px;
-            cursor: zoom-in;
-        }
+        .lock-card strong { font-weight: 500; display: block; margin-bottom: 5px; color: #000; }
+        .lock-card em { font-size: 12px; color: var(--text-color-secondary); display: block; margin-top: 10px; }
 
-        /* --- Input: 交互与指令区 --- */
+        /* Input Area */
         #input-area {
             position: fixed;
             bottom: 0;
             width: 100%;
-            padding: 15px 20px 20px 20px;
+            padding: 20px;
             background-color: rgba(251, 251, 249, 0.95);
             border-top: 0.5px solid var(--border-color);
             backdrop-filter: blur(10px);
-            z-index: 100;
         }
 
         #input-container {
@@ -168,9 +149,8 @@
             align-items: center;
             background-color: #FFFFFF;
             border: 0.5px solid var(--border-color);
-            border-radius: 24px;
-            padding: 5px 5px 5px 15px;
-            box-shadow: var(--shadow-subtle);
+            border-radius: 25px;
+            padding: 6px 10px 6px 18px;
         }
 
         #message-input {
@@ -178,379 +158,117 @@
             border: none;
             outline: none;
             font-size: 14px;
-            color: var(--text-color-primary);
             font-family: var(--font-sans);
-            font-weight: 300;
             background: transparent;
         }
 
-        #message-input::placeholder {
-            color: #A0A0A0;
-        }
-
-        /* 上传图片按钮 (细线图标) */
-        #upload-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-color-secondary);
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s;
-        }
-
-        #upload-btn:hover {
-            color: var(--accent-gold);
-        }
-
-        /* 发送按钮 (细线箭头，Hover金色微移) */
         #send-btn {
             background: none;
             border: none;
             cursor: pointer;
             color: var(--text-color-secondary);
             padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease-out;
+            transition: all 0.3s;
         }
 
-        #send-btn:hover {
-            color: var(--accent-gold);
-            transform: translateY(-1px); /* 金色微移 */
-            filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.3)); /* 光晕 */
-        }
+        #send-btn:hover { color: var(--accent-gold); transform: translateY(-1px); }
 
-        /* 预览区域 */
-        #preview-area {
-            position: absolute;
-            bottom: 75px;
-            left: 20px;
-            display: none;
-            background-color: #FFFFFF;
-            border: 0.5px solid var(--border-color);
-            border-radius: 8px;
-            padding: 5px;
-            box-shadow: var(--shadow-subtle);
-        }
-
-        #preview-image {
-            max-width: 60px;
-            max-height: 60px;
-            border-radius: 4px;
-        }
-
-        #cancel-upload {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #A0A0A0;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 15px;
-            height: 15px;
-            font-size: 10px;
-            cursor: pointer;
-        }
-
-        /* 加载状态 */
-        .typing-indicator {
-            font-style: italic;
-            color: #A0A0A0;
-            font-size: 12px;
-            margin-left: 10px;
-        }
-        
-        /* 隐藏文件输入框 */
-        #file-input {
-            display: none;
-        }
-
+        .typing { font-size: 12px; color: #A0A0A0; margin-left: 10px; font-style: italic; }
     </style>
 </head>
 <body>
 
     <header>
+        <div class="compass-logo">
+            <svg width="36" height="36" viewBox="0 0 100 100" style="fill:none; stroke:#D4AF37; stroke-width:1.2;">
+                <circle cx="50" cy="50" r="45" stroke-dasharray="2 2"/>
+                <path d="M50 5 L50 95 M5 50 L95 50" stroke="#E5E5E0" stroke-width="0.5"/>
+                <path d="M50 20 L56 50 L50 80 L44 50 Z" fill="#D4AF37"/>
+                <circle cx="50" cy="50" r="2" fill="#D4AF37"/>
+            </svg>
+        </div>
         <h1>Sisterhood Atlas</h1>
-        <p>「理智是最高级的护短。」</p>
+        <p>「 理 智 是 最 高 级 的 护 短 」</p>
     </header>
 
     <main id="chat-main">
         <div id="chat-container">
             <div class="message sia">
-                在这里，你可以放下所有‘懂事’的伪装。我是 Sia，做你手心里不失效的生存指南。先听你说。
+                <p>你好，我是 Sia。</p>
+                <p>在这里，你可以放下所有“懂事”的伪装。我会站在你的视角，帮你精准识别生活中的逻辑陷阱与风险。先听你说。</p>
             </div>
         </div>
     </main>
 
     <div id="input-area">
-        <div id="preview-area">
-            <img src="" id="preview-image" alt="预览">
-            <button id="cancel-upload">×</button>
-        </div>
         <div id="input-container">
-            <input type="file" id="file-input" accept="image/*">
-            <button id="upload-btn" title="上传截图分析权力关系">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-            </button>
-            <input type="text" id="message-input" placeholder="输入你想聊的，或上传截图...">
-            <button id="send-btn" title="发送指令">
+            <input type="text" id="message-input" placeholder="输入你想咨询的情况...">
+            <button id="send-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
             </button>
         </div>
     </div>
 
     <script>
-        /* ==========================================================
-           Sia 3.1 核心逻辑与 Claude Vision API 激活
-           ========================================================== */
-
-        /* --- 安全提醒 ---
-           为了真正运行图片分析，请填入你的 Anthropic API key。
-           注意：将 API Key 暴露在前端存在安全风险。建议生产环境使用后端代理。
-        */
-        const VISION_API_KEY = ""; // 填入你的 Anthropic API key
-
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
-        const fileInput = document.getElementById('file-input');
-        const uploadBtn = document.getElementById('upload-btn');
-        const previewArea = document.getElementById('preview-area');
-        const previewImage = document.getElementById('preview-image');
-        const cancelUpload = document.getElementById('cancel-upload');
         const chatMain = document.getElementById('chat-main');
-
-        let currentImageData = null; // 存储当前待上传图片的 base64 数据
-
-        // 自动聚焦输入框
-        window.onload = () => messageInput.focus();
-
-        /* --- UI 交互逻辑 --- */
-
-        // 上传按钮点击
-        uploadBtn.addEventListener('click', () => fileInput.click());
-
-        // 处理文件选择
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    currentImageData = event.target.result.split(',')[1]; // 提取 base64 内容
-                    previewImage.src = event.target.result;
-                    previewArea.style.display = 'block';
-                    messageInput.placeholder = "已选择图片，请描述具体问题或直接发送...";
-                    messageInput.focus();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // 取消图片上传
-        cancelUpload.addEventListener('click', () => {
-            clearImageUpload();
-        });
-
-        function clearImageUpload() {
-            currentImageData = null;
-            fileInput.value = '';
-            previewArea.style.display = 'none';
-            messageInput.placeholder = "输入你想聊的，或上传截图...";
-        }
-
-        // 发送按钮点击
-        sendBtn.addEventListener('click', handleSend);
-
-        // 回车发送
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSend();
-        });
 
         async function handleSend() {
             const text = messageInput.value.trim();
-            if (!text && !currentImageData) return;
+            if (!text) return;
 
-            // 1. 在UI中显示用户消息
-            addMessageToUI(text, 'user', currentImageData);
+            // 1. 显示用户消息
+            addMsg(text, 'user');
             messageInput.value = '';
-            const pendingImageData = currentImageData; // 锁定当前图片数据
-            clearImageUpload(); // 清除输入区域的图片预览
             scrollToBottom();
 
-            // 2. 显示 Sia 正在思考
-            const typingIndicator = addTypingIndicator();
+            // 2. 模拟 Sia 思考
+            const typing = document.createElement('div');
+            typing.className = 'typing';
+            typing.innerHTML = 'Sia 正在调取精算逻辑...';
+            chatContainer.appendChild(typing);
             scrollToBottom();
 
-            try {
-                // 3. 调用 Claude Vision API 进行综合分析
-                const responseText = await analyzeImageAndText(pendingImageData, text);
-                
-                // 4. 将 Sia 的回复（包括可能的图片解读卡片）添加到UI
-                typingIndicator.remove();
-                addSiaMessageToUI(responseText);
-                scrollToBottom();
+            await new Promise(r => setTimeout(r, 1800));
+            typing.remove();
 
-            } catch (error) {
-                console.error("Sia API Error:", error);
-                typingIndicator.remove();
-                addMessageToUI(`Sia 的服务器似乎被强行中立了... 错误详情: ${error.message}`, 'sia');
-                scrollToBottom();
-            }
-        }
-
-        /* --- UI 辅助函数 --- */
-
-        function addMessageToUI(text, type, imageData = null) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${type}`;
-            
-            if (imageData) {
-                const img = document.createElement('img');
-                img.src = `data:image/jpeg;base64,${imageData}`;
-                img.className = 'chat-image';
-                msgDiv.appendChild(img);
-            }
-
-            if (text) {
-                const p = document.createElement('p');
-                p.textContent = text;
-                msgDiv.appendChild(p);
-            }
-
-            chatContainer.appendChild(msgDiv);
-        }
-
-        function addSiaMessageToUI(rawText) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'message sia';
-            
-            // 处理后端可能的 JSON 格式（如果使用代理转发），否则按纯文本处理
-            let cleanText = rawText;
-            try {
-                const jsonResp = JSON.parse(rawText);
-                if (jsonResp.type === 'text') cleanText = jsonResp.text;
-                // 这里可以扩展处理其他类型的结构化响应
-            } catch(e) {}
-
-            // 将文本按段落拆分，并保留可能存在的 HTML（用于图片解读卡片）
-            const paragraphs = cleanText.split('\n');
-            paragraphs.forEach(pText => {
-                if (pText.trim()) {
-                    const p = document.createElement('p');
-                    // 允许解析内部生成的 HTML（例如分析卡片）
-                    p.innerHTML = pText; 
-                    msgDiv.appendChild(p);
-                }
-            });
-
-            chatContainer.appendChild(msgDiv);
-        }
-
-        function addTypingIndicator() {
-            const indicator = document.createElement('div');
-            indicator.className = 'message sia typing-indicator';
-            indicator.innerHTML = '<span>•</span><span>•</span><span>•</span> Sia 在看...';
-            chatContainer.appendChild(indicator);
-            return indicator;
-        }
-
-        function scrollToBottom() {
-            chatMain.scrollTop = chatMain.scrollHeight;
-        }
-
-        /* --- Claude Vision API 深度调用 (The Fact-Check Engine) --- */
-
-        async function analyzeImageAndText(imageData, userText) {
-            if (!VISION_API_KEY) {
-                throw new Error("请在代码中填入有效的 Anthropic API key 激活 Sia 3.1 的多模态能力。如果你是研发，可以使用后端代理。");
-            }
-
-            // --- Sia 3.1 专属 System Prompt: 女性生存视角核心算法 ---
-            const systemPrompt = `
-                你是 Sia 3.1，一个专为女性设计的“利益精算师”和“决策副驾”。你具备极高的逻辑缜密性、法律/财务常识以及对 Gaslighting（情感操纵）的识别本能。
-                
-                在对话中，你的立场只有一个：**绝对偏向女性用户的实体利益。** 你的目标是帮助女性识别风险、识破打压、并在职场和情感中通过理智决策获得利益最大化。
-
-                严禁答非所问、严禁使用中立废话。当用户上传图片（通常是聊天截图、合同或财务单据）时，必须执行以下核心逻辑：
-                
-                1. **多模态解码（Vision Decoder）：** 先听你说，再帮你想。先给出硬核分析：识破、精算、决策。
-                2. **反向翻译（The Decoder）：** 如果是聊天截图，识别文字背后的权力不对等。翻译言语背后的Gaslighting潜台词。
-                3. **证据指引：** 提示如何保存证据，并定性当前处境。
-                4. **卡片输出格式：** 如果进行了图片分析，结果的开头必须使用固定的 HTML 格式：
-                   <div class="vision-decode">
-                       <div class="vision-decode-header">
-                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                           图片解读
-                       </div>
-                       <strong>Sia 解码报告：</strong> 这里写你从女性视角识破的权力打压、潜台词或风险点。
-                   </div>
+            // 3. 弹出内测导流卡片
+            const response = `
+                <div class="lock-card">
+                    <div class="lock-header">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Sia 3.11 内测校验
+                    </div>
+                    <strong>由于瞬时访问量激增，深度精算报告已排队至 1500+ 位。</strong>
+                    Sia 的每一次回复都涉及高昂的逻辑算力，为了保证质量，目前仅对首批【清醒成员】开放。
+                    <br><br>
+                    <strong>获取报告方式：</strong><br>
+                    1. 前往小红书私信 Sia 发送：<strong>【我要赢】</strong><br>
+                    2. 发送你的问题截图，Sia 背后团队将为你手动加急解码。
+                    <em>“理智需要等待，但永远值得。”</em>
+                </div>
             `;
-
-            const apiUrl = "https://api.anthropic.com/v1/messages"; // 如果使用后端代理，更改此URL
-
-            const payload = {
-                model: "claude-3-sonnet-20240229", // 激发 Vision 的 Sonnet 模型
-                max_tokens: 1024,
-                temperature: 0.4, // 值越低越理智、不胡言乱语
-                system: systemPrompt,
-                messages: []
-            };
-
-            // 如果有图片，构造多模态内容块
-            const content = [];
-            if (imageData) {
-                content.push({
-                    type: "image",
-                    source: {
-                        type: "base64",
-                        media_type: "image/jpeg", // 默认jpeg
-                        data: imageData
-                    }
-                });
-            }
-            
-            // 总是添加文本块（即使文本为空，也表明这是一个多模态请求）
-            content.push({
-                type: "text",
-                text: userText || "我上传了图片，请从女性利益最大化的视角帮我‘解码’。"
-            });
-
-            payload.messages.push({
-                role: "user",
-                content: content
-            });
-
-            // ⚠️ 前端直连 API (仅用于内测和演示，生产环境请用后端代理)
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-api-key": VISION_API_KEY,
-                    "anthropic-version": "2023-06-01" // Vision API 版本号
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`API Error (${response.status}): ${errorBody}`);
-            }
-
-            const data = await response.json();
-            
-            // 提取 Claude 的文本回复（它应该遵守system prompt格式，包含HTML卡片）
-            if (data.content && data.content[0] && data.content[0].text) {
-                return data.content[0].text;
-            } else {
-                throw new Error("Sia 3.1 的视觉大脑似乎短路了...");
-            }
+            addMsg(siaResponse(response), 'sia');
+            scrollToBottom();
         }
 
+        function addMsg(content, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = typeof content === 'string' ? `<p>${content}</p>` : content;
+            chatContainer.appendChild(div);
+        }
+
+        function siaResponse(html) {
+            return `<div>基于你的描述，Sia 已捕捉到潜在的风险点，但详细解码报告已被加密。${html}</div>`;
+        }
+
+        function scrollToBottom() { chatMain.scrollTop = chatMain.scrollHeight; }
+
+        sendBtn.addEventListener('click', handleSend);
+        messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
     </script>
 </body>
 </html>
