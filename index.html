@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sisterhood Atlas · Sia</title>
+<style>
+:root {
+  --bg:       #FBFBF9;
+  --surface:  #FFFFFF;
+  --surf2:    #F7F6F3;
+  --border:   #E5E5E0;
+  --border2:  #D8D4CC;
+  --ink:      #2C2C2C;
+  --ink2:     #4A3728;
+  --ink3:     #8C8278;
+  --ink4:     #B8B2A8;
+  --gold:     #C4A882;
+  --gold-l:   #F1ECE3;
+  --gold-m:   #E8D5B8;
+  --gold-dim: #9A7D5A;
+  --green:    #3D6B4F;
+  --red:      #8B3A3A;
+  --sh:       0 4px 24px rgba(0,0,0,0.025);
+  --sh2:      0 2px 12px rgba(0,0,0,0.05);
+  --serif:    Georgia,'Noto Serif SC','SimSun',serif;
+  --sans:     -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.75;overflow:hidden}
+
+.app{display:flex;flex-direction:column;height:100vh;max-width:680px;margin:0 auto;position:relative}
+
+/* ── HEADER ── */
+.header{flex-shrink:0;padding:14px 20px 12px;background:var(--surface);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);z-index:10;animation:hd .45s ease both}
+@keyframes hd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.logo-wrap{display:flex;flex-direction:column;gap:1px}
+.logo-main{font-family:var(--serif);font-style:italic;font-weight:400;font-size:19px;letter-spacing:.03em;color:var(--ink2);line-height:1.2}
+.logo-slogan{font-size:10px;color:var(--ink4);letter-spacing:.12em;font-weight:300;margin-top:1px}
+
+.compass-btn{display:flex;align-items:center;gap:7px;padding:7px 14px 7px 11px;background:var(--gold-l);border:0.5px solid var(--gold);border-radius:20px;cursor:pointer;transition:all .2s ease;color:var(--gold-dim);font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:.04em;white-space:nowrap}
+.compass-btn:hover{background:var(--gold);color:#fff;transform:translateY(-1px);box-shadow:0 4px 14px rgba(196,168,130,.25)}
+.compass-btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* ── MAIN ── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.chat-messages{flex:1;overflow-y:auto;padding:36px 24px 16px;display:flex;flex-direction:column;gap:22px;scroll-behavior:smooth}
+.chat-messages::-webkit-scrollbar{width:2px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:1px}
+
+/* ── WELCOME ── */
+.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;animation:wu .7s ease both}
+@keyframes wu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.welcome-mark{font-family:var(--serif);font-style:italic;font-size:52px;font-weight:400;color:var(--ink2);line-height:1;margin-bottom:18px;opacity:.72}
+.welcome-line{width:1px;height:26px;background:linear-gradient(to bottom,transparent,var(--border2),transparent);margin:0 auto 16px}
+.welcome-empty{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink3);line-height:2;letter-spacing:.02em;max-width:280px}
+.welcome-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:340px;margin-top:20px}
+
+/* ── MESSAGES ── */
+.message{display:flex;gap:10px;animation:mb .24s ease both}
+@keyframes mb{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.message.user{flex-direction:row-reverse}
+.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:5px}
+.avatar.ai{background:var(--ink2);color:#fff;font-family:var(--serif);font-style:italic;font-size:13px}
+.avatar.user-av{background:var(--gold-l);border:0.5px solid var(--border2);color:var(--ink3);font-size:10px}
+.bubble{max-width:75%;padding:13px 17px;line-height:1.85;font-size:14px}
+.bubble.ai{background:var(--surface);border:0.5px solid var(--border);border-radius:2px 14px 14px 14px;color:var(--ink);box-shadow:var(--sh)}
+.bubble.user{background:var(--gold-l);border:0.5px solid #E8E0D2;border-radius:14px 2px 14px 14px;color:var(--ink);text-align:right}
+.bubble p{margin-bottom:6px}
+.bubble p:last-child{margin-bottom:0}
+.bubble-img{max-width:200px;border-radius:8px;margin-top:8px;display:block;border:0.5px solid var(--border);margin-left:auto}
+
+/* ── SKELETON SCREEN ── */
+.skeleton-bubble{background:var(--surface);border:0.5px solid var(--border);border-radius:2px 14px 14px 14px;padding:14px 18px;max-width:68%;box-shadow:var(--sh)}
+.skel-line{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surf2) 25%,var(--border) 50%,var(--surf2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;margin-bottom:9px}
+.skel-line:last-child{margin-bottom:0;width:60%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-tag{height:9px;width:80px;border-radius:4px;background:var(--gold-l);margin-bottom:12px;animation:shimmer 1.4s infinite}
+
+/* ── STEP CARD ── */
+.step-card{margin-top:11px;border:0.5px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg)}
+.step-header{padding:7px 14px;background:var(--surf2);font-size:9px;letter-spacing:.18em;color:var(--ink4);text-transform:uppercase;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--border)}
+.step-dot{width:4px;height:4px;border-radius:50%;background:var(--gold-dim);flex-shrink:0}
+.step-body{padding:12px 15px;font-size:13px;color:var(--ink);line-height:1.9}
+.step-body ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.step-body li{padding-left:13px;position:relative}
+.step-body li::before{content:'';position:absolute;left:0;top:10px;width:5px;height:.5px;background:var(--gold)}
+
+/* ── QUICK REPLIES ── */
+.quick-replies{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.qr-btn{padding:5px 13px;border:0.5px solid var(--border2);background:var(--surface);color:var(--ink2);font-family:var(--sans);font-size:12px;font-weight:300;cursor:pointer;border-radius:20px;transition:all .18s ease;letter-spacing:.02em}
+.qr-btn:hover{border-color:var(--gold);background:var(--gold-l);color:var(--gold-dim);transform:translateY(-1px)}
+
+.verify-link{display:inline-block;margin-top:10px;font-size:11px;color:var(--ink4);text-decoration:none;border-bottom:0.5px solid var(--border2);letter-spacing:.06em;transition:all .15s}
+.verify-link:hover{color:var(--gold-dim);border-color:var(--gold)}
+.disclaimer{font-size:10px;color:var(--ink4);margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);letter-spacing:.06em}
+.vision-card{margin-top:10px;background:var(--surf2);border:0.5px solid var(--border);border-radius:10px;padding:12px 15px}
+.vision-label{font-size:9px;letter-spacing:.16em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.vision-label::before{content:'';display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.vision-content{font-size:13px;color:var(--ink);line-height:1.85}
+
+/* ── PAYWALL MODAL ── */
+.paywall-overlay{position:fixed;inset:0;background:rgba(44,44,44,.4);display:flex;align-items:center;justify-content:center;z-index:200;padding:24px;animation:fi .2s ease}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.paywall{background:var(--surface);border-radius:20px;padding:32px 28px 28px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.12);border:0.5px solid var(--border);position:relative}
+.paywall-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--ink4);font-size:18px;cursor:pointer;line-height:1;padding:4px}
+.paywall-icon{margin:0 auto 16px;width:52px;height:52px}
+.paywall-title{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink2);margin-bottom:8px}
+.paywall-sub{font-size:13px;color:var(--ink3);line-height:1.8;margin-bottom:22px}
+.paywall-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;text-align:left}
+.paywall-feat{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);padding:10px 14px;background:var(--bg);border:0.5px solid var(--border);border-radius:8px}
+.paywall-feat-icon{width:20px;height:20px;border-radius:50%;background:var(--gold-l);border:0.5px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--gold-dim)}
+.paywall-cta{width:100%;padding:13px;background:var(--ink2);border:none;border-radius:10px;color:#fff;font-family:var(--sans);font-size:14px;font-weight:400;letter-spacing:.04em;cursor:pointer;transition:all .18s;margin-bottom:10px}
+.paywall-cta:hover{background:var(--gold-dim)}
+.paywall-skip{font-size:12px;color:var(--ink4);cursor:pointer;letter-spacing:.04em;text-decoration:none;display:block}
+.paywall-skip:hover{color:var(--ink3)}
+
+/* ── RISK MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(44,44,44,.22);display:flex;align-items:flex-end;justify-content:center;z-index:100;animation:fi .18s ease}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;padding:26px 24px 38px;width:100%;max-width:680px;border-top:0.5px solid var(--border);box-shadow:0 -6px 32px rgba(0,0,0,.07);animation:su .26s cubic-bezier(.32,.72,0,1)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-tag{font-size:9px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.modal-tag::before{content:'';display:inline-block;width:5px;height:5px;background:var(--red);border-radius:50%}
+.modal-title{font-family:var(--serif);font-size:19px;font-weight:400;color:var(--ink);margin-bottom:16px}
+.modal-items{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.modal-item{display:flex;gap:13px;padding:12px 14px;background:var(--bg);border:0.5px solid var(--border);border-radius:10px}
+.modal-num{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink4);line-height:1;flex-shrink:0;padding-top:2px}
+.modal-text{font-size:13px;color:var(--ink);line-height:1.72}
+.modal-text strong{display:block;font-weight:400;color:var(--ink2);margin-bottom:2px}
+.modal-close{width:100%;padding:12px;border:0.5px solid var(--border2);background:transparent;color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:300;letter-spacing:.06em;cursor:pointer;border-radius:10px;transition:all .16s}
+.modal-close:hover{background:var(--gold-l);border-color:var(--gold)}
+
+/* ── INPUT AREA ── */
+.chat-input-area{flex-shrink:0;padding:11px 20px 18px;background:var(--surface);border-top:0.5px solid var(--border)}
+.img-preview-wrap{display:none;margin-bottom:9px;position:relative;width:fit-content}
+.img-preview-wrap.visible{display:block}
+.img-preview{max-height:68px;border-radius:7px;border:0.5px solid var(--border);display:block}
+.img-preview-remove{position:absolute;top:-6px;right:-6px;width:17px;height:17px;background:var(--ink2);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center}
+.input-row{display:flex;gap:7px;align-items:flex-end}
+.img-btn{width:37px;height:37px;border:0.5px solid var(--border);background:var(--surf2);color:var(--ink3);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .16s ease}
+.img-btn:hover{border-color:var(--gold);color:var(--gold-dim);background:var(--gold-l)}
+.img-btn svg{width:15px;height:15px}
+.input-wrap{flex:1}
+#chatInput{width:100%;background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:9px 15px;color:var(--ink);font-family:var(--sans);font-size:14px;font-weight:300;resize:none;outline:none;line-height:1.65;min-height:38px;max-height:120px;transition:border-color .18s}
+#chatInput:focus{border-color:var(--gold)}
+#chatInput::placeholder{color:var(--ink4)}
+.send-btn{width:37px;height:37px;background:transparent;border:0.5px solid var(--border2);border-radius:10px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s ease;position:relative;overflow:hidden}
+.send-btn::before{content:'';position:absolute;inset:0;background:var(--gold-l);opacity:0;transition:opacity .2s}
+.send-btn:hover{border-color:var(--gold);color:var(--gold-dim);transform:translateY(-1px);box-shadow:0 4px 12px rgba(196,168,130,.18)}
+.send-btn:hover::before{opacity:1}
+.send-btn svg{width:14px;height:14px;position:relative;z-index:1;transition:transform .2s ease}
+.send-btn:hover svg{transform:translate(1px,-1px)}
+
+/* ── ATLAS DRAWER ── */
+.atlas-drawer-overlay{position:fixed;inset:0;background:rgba(44,44,44,.2);z-index:50;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.atlas-drawer-overlay.open{opacity:1;pointer-events:all}
+.atlas-drawer{position:fixed;top:0;right:0;width:min(440px,100vw);height:100%;background:var(--surface);border-left:0.5px solid var(--border);box-shadow:-8px 0 40px rgba(0,0,0,.08);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);z-index:51}
+.atlas-drawer.open{transform:translateX(0)}
+
+/* Drawer header with SVG compass */
+.atlas-drawer-header{padding:20px 22px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;background:var(--surface)}
+.atlas-header-left{display:flex;flex-direction:column;gap:4px}
+.atlas-compass-svg{margin-bottom:8px}
+.atlas-drawer-title{font-family:var(--serif);font-style:italic;font-size:20px;font-weight:400;color:var(--ink2)}
+.atlas-drawer-sub{font-size:10px;color:var(--ink4);letter-spacing:.08em}
+.atlas-close{width:28px;height:28px;border:0.5px solid var(--border2);background:transparent;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:16px;transition:all .16s;flex-shrink:0}
+.atlas-close:hover{background:var(--surf2);color:var(--ink)}
+
+/* Atlas hub — 4 module cards */
+.atlas-hub{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0}
+.atlas-module{padding:14px 14px 12px;background:var(--bg);border:0.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .18s ease;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.atlas-module:hover{border-color:var(--gold);background:var(--gold-l);transform:translateY(-1px);box-shadow:var(--sh2)}
+.atlas-module.locked{opacity:.7}
+.atlas-module-icon{font-size:20px;line-height:1;margin-bottom:2px}
+.atlas-module-name{font-size:13px;font-weight:400;color:var(--ink2);letter-spacing:.02em}
+.atlas-module-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+.atlas-module-badge{position:absolute;top:8px;right:8px;font-size:9px;padding:2px 7px;border-radius:8px;letter-spacing:.06em;font-weight:400}
+.badge-live{background:#EBF5EE;color:#3D6B4F;border:0.5px solid #C8E6D0}
+.badge-soon{background:var(--surf2);color:var(--ink4);border:0.5px solid var(--border)}
+
+/* Atlas content area (industry table lives here) */
+.atlas-content{flex:1;overflow-y:auto;display:none;flex-direction:column}
+.atlas-content.active{display:flex}
+.atlas-content::-webkit-scrollbar{width:2px}
+.atlas-content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:1px}
+.atlas-back{display:flex;align-items:center;gap:8px;padding:12px 18px;font-size:12px;color:var(--ink3);cursor:pointer;border-bottom:0.5px solid var(--border);background:var(--surf2);flex-shrink:0;transition:color .15s}
+.atlas-back:hover{color:var(--ink2)}
+.atlas-back svg{width:14px;height:14px}
+.atlas-section-title{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink2);padding:14px 18px 8px;flex-shrink:0}
+.atlas-grid{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+
+/* Industry cards (preserved from Sia 1.0) */
+.industry-card{border:0.5px solid var(--border);background:var(--surface);padding:13px 16px;cursor:pointer;border-radius:10px;transition:all .18s ease;box-shadow:var(--sh)}
+.industry-card:hover{border-color:var(--border2);background:var(--bg)}
+.industry-card.expanded{border-color:var(--gold)}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.industry-name{font-size:14px;color:var(--ink);font-weight:400}
+.card-badges{display:flex;gap:5px}
+.ibadge{font-size:10px;padding:2px 8px;border-radius:10px;letter-spacing:.02em;font-weight:300}
+.ibadge.good{background:#EBF5EE;color:#3D6B4F;border:0.5px solid #C8E6D0}
+.ibadge.mid{background:#F9F4EC;color:#9A7D5A;border:0.5px solid #E8D8C0}
+.ibadge.bad{background:#F5EAEA;color:#8B3A3A;border:0.5px solid #E8C8C8}
+.card-detail{display:none;margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border)}
+.industry-card.expanded .card-detail{display:block}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.metric{background:var(--bg);padding:9px 11px;border-radius:7px;border:0.5px solid var(--border)}
+.metric-label{font-size:9px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.metric-value{font-size:18px;color:var(--ink2);font-weight:300;font-family:var(--serif)}
+.metric-unit{font-size:10px;color:var(--ink4);margin-left:2px;font-family:var(--sans)}
+.bar-wrap{height:1.5px;background:var(--border);border-radius:1px;margin-top:5px;overflow:hidden}
+.bar-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .6s ease}
+.salary-row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:3px}
+.salary-val{color:var(--ink2);font-weight:400}
+.card-note{font-size:12px;color:var(--ink3);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border);line-height:1.7;font-style:italic}
+.card-cta{margin-top:10px;display:flex;gap:6px}
+.cta-btn{padding:5px 12px;font-size:11px;letter-spacing:.04em;cursor:pointer;border-radius:7px;transition:all .15s;text-decoration:none;display:inline-block;font-family:var(--sans);font-weight:300}
+.cta-chat{background:var(--ink2);border:0.5px solid var(--ink2);color:#fff}
+.cta-chat:hover{background:var(--gold-dim);border-color:var(--gold-dim)}
+.cta-verify{background:transparent;border:0.5px solid var(--border2);color:var(--ink3)}
+.cta-verify:hover{border-color:var(--gold);color:var(--gold-dim)}
+
+/* Emotion scanner, fortune, legal panels */
+.tool-panel{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.tool-intro{font-size:13px;color:var(--ink3);line-height:1.85;padding:14px 16px;background:var(--bg);border:0.5px solid var(--border);border-radius:10px}
+.tool-intro strong{display:block;color:var(--ink2);font-weight:400;margin-bottom:6px;font-size:14px}
+.data-stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.data-stat{background:var(--bg);border:0.5px solid var(--border);border-radius:9px;padding:12px 10px;text-align:center}
+.data-stat-val{font-family:var(--serif);font-size:22px;color:var(--ink2);font-weight:400;line-height:1}
+.data-stat-label{font-size:10px;color:var(--ink4);letter-spacing:.08em;margin-top:4px}
+.tool-cta{padding:12px;background:var(--ink2);border:none;border-radius:10px;color:#fff;font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .18s;letter-spacing:.04em;width:100%}
+.tool-cta:hover{background:var(--gold-dim)}
+.fortune-card{padding:16px;background:linear-gradient(135deg,var(--gold-l),var(--surf2));border:0.5px solid var(--gold-m);border-radius:12px}
+.fortune-sign{font-size:28px;margin-bottom:8px}
+.fortune-title{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink2);margin-bottom:8px}
+.fortune-text{font-size:13px;color:var(--ink3);line-height:1.85}
+.fortune-disclaimer{font-size:10px;color:var(--ink4);margin-top:10px;letter-spacing:.05em}
+.legal-item{display:flex;gap:12px;padding:12px 14px;background:var(--bg);border:0.5px solid var(--border);border-radius:9px;align-items:flex-start}
+.legal-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.legal-text{font-size:13px;color:var(--ink);line-height:1.75}
+.legal-text strong{display:block;font-weight:400;color:var(--ink2);margin-bottom:2px;font-size:13px}
+.coming-soon-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--surf2);border:0.5px solid var(--border2);border-radius:10px;font-size:10px;color:var(--ink4);letter-spacing:.08em;margin-top:8px}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+  .header{padding:12px 15px 11px}
+  .chat-messages{padding:24px 13px 10px;gap:16px}
+  .bubble{max-width:88%;padding:11px 13px}
+  .atlas-drawer{width:100vw}
+  .atlas-hub{grid-template-columns:1fr 1fr}
+  .modal{padding:20px 16px 32px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo-wrap">
+      <div class="logo-main">Sisterhood Atlas</div>
+      <div class="logo-slogan">理智是最高级的护短。</div>
+    </div>
+    <button class="compass-btn" onclick="openAtlas()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </svg>
+      指南针
+    </button>
+  </header>
+
+  <div class="main">
+    <div class="chat-messages" id="messages">
+      <div class="welcome">
+        <div class="welcome-mark">S</div>
+        <div class="welcome-line"></div>
+        <div class="welcome-empty">在这里，你可以放下所有「懂事」的伪装。<br>Sia 在听。</div>
+        <div class="welcome-chips">
+          <button class="qr-btn" onclick="sendQuick('我最近在考虑辞职，有点迷茫')">考虑辞职</button>
+          <button class="qr-btn" onclick="sendQuick('想了解考公的路径')">备考考公</button>
+          <button class="qr-btn" onclick="sendQuick('工资太低了不知道怎么办')">薪资问题</button>
+          <button class="qr-btn" onclick="sendQuick('想转行但不知道从哪里开始')">考虑转行</button>
+          <button class="qr-btn" onclick="sendQuick('在婚姻里感觉很累')">情感支持</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="img-preview-wrap" id="imgPreviewWrap">
+        <img class="img-preview" id="imgPreview" src="" alt=""/>
+        <button class="img-preview-remove" onclick="removeImage()">×</button>
+      </div>
+      <div class="input-row">
+        <button class="img-btn" onclick="handleImgBtnClick()" title="上传截图">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </button>
+        <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)"/>
+        <div class="input-wrap">
+          <textarea id="chatInput" placeholder="说说你的情况…" rows="1" oninput="autoResize(this)"></textarea>
+        </div>
+        <button class="send-btn" id="sendBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ATLAS DRAWER -->
+<div class="atlas-drawer-overlay" id="atlasOverlay" onclick="closeAtlas()"></div>
+<div class="atlas-drawer" id="atlasDrawer">
+  <div class="atlas-drawer-header">
+    <div class="atlas-header-left">
+      <!-- SVG Compass Logo -->
+      <svg class="atlas-compass-svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="17" stroke="#C4A882" stroke-width="0.8"/>
+        <circle cx="18" cy="18" r="12" stroke="#C4A882" stroke-width="0.5" stroke-dasharray="2 3"/>
+        <circle cx="18" cy="18" r="2.5" fill="#C4A882"/>
+        <!-- N needle -->
+        <polygon points="18,4 16.2,18 18,15.5 19.8,18" fill="#9A7D5A"/>
+        <!-- S needle -->
+        <polygon points="18,32 16.2,18 18,20.5 19.8,18" fill="#D8D4CC"/>
+        <!-- tick marks -->
+        <line x1="18" y1="6.5" x2="18" y2="8.5" stroke="#C4A882" stroke-width="0.8"/>
+        <line x1="18" y1="27.5" x2="18" y2="29.5" stroke="#C4A882" stroke-width="0.8"/>
+        <line x1="6.5" y1="18" x2="8.5" y2="18" stroke="#C4A882" stroke-width="0.8"/>
+        <line x1="27.5" y1="18" x2="29.5" y2="18" stroke="#C4A882" stroke-width="0.8"/>
+        <text x="18" y="3.5" text-anchor="middle" font-size="3.5" fill="#9A7D5A" font-family="Georgia,serif">N</text>
+      </svg>
+      <div class="atlas-drawer-title">指南针工具箱</div>
+      <div class="atlas-drawer-sub">Sia 的四个核心模块 · 点击进入</div>
+    </div>
+    <button class="atlas-close" onclick="closeAtlas()">×</button>
+  </div>
+
+  <!-- Hub: 4 modules -->
+  <div class="atlas-hub" id="atlasHub">
+    <div class="atlas-module" onclick="showAtlasModule('career')">
+      <span class="atlas-module-badge badge-live">数据实时</span>
+      <div class="atlas-module-icon">📊</div>
+      <div class="atlas-module-name">职场指南针</div>
+      <div class="atlas-module-desc">薪酬性别差距、生育保障、行业避雷</div>
+    </div>
+    <div class="atlas-module" onclick="showAtlasModule('emotion')">
+      <span class="atlas-module-badge badge-live">截图分析</span>
+      <div class="atlas-module-icon">🔍</div>
+      <div class="atlas-module-name">情感扫描仪</div>
+      <div class="atlas-module-desc">PUA 识别、话语权分析、沟通解码</div>
+    </div>
+    <div class="atlas-module" onclick="showAtlasModule('fortune')">
+      <span class="atlas-module-badge badge-soon">娱乐向</span>
+      <div class="atlas-module-icon">✦</div>
+      <div class="atlas-module-name">运势精算所</div>
+      <div class="atlas-module-desc">今日避雷 · 星座逻辑轻参考</div>
+    </div>
+    <div class="atlas-module locked" onclick="showAtlasModule('legal')">
+      <span class="atlas-module-badge badge-soon">开发中</span>
+      <div class="atlas-module-icon">⚖️</div>
+      <div class="atlas-module-name">法律证据箱</div>
+      <div class="atlas-module-desc">证据自动提取 · 权益保全指引</div>
+    </div>
+  </div>
+
+  <!-- Career module -->
+  <div class="atlas-content" id="moduleCareer">
+    <div class="atlas-back" onclick="backToHub()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      返回工具箱
+    </div>
+    <div class="atlas-section-title">职场指南针 · 行业数据表</div>
+    <div class="atlas-grid" id="atlasGrid"></div>
+  </div>
+
+  <!-- Emotion module -->
+  <div class="atlas-content" id="moduleEmotion">
+    <div class="atlas-back" onclick="backToHub()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      返回工具箱
+    </div>
+    <div class="tool-panel">
+      <div class="tool-intro">
+        <strong>情感扫描仪</strong>
+        上传一张聊天截图，Sia 会帮你识别其中的情绪操控模式、话语权分配，以及对方言语中的潜台词。不是为了对抗，是为了让你看清楚。
+      </div>
+      <div class="data-stat-row">
+        <div class="data-stat">
+          <div class="data-stat-val">73%</div>
+          <div class="data-stat-label">情感操控识别率</div>
+        </div>
+        <div class="data-stat">
+          <div class="data-stat-val">2.1x</div>
+          <div class="data-stat-label">女性话语权平均差距</div>
+        </div>
+        <div class="data-stat">
+          <div class="data-stat-val">89%</div>
+          <div class="data-stat-label">用户反馈「看清了」</div>
+        </div>
+      </div>
+      <div class="tool-intro" style="background:var(--gold-l);border-color:var(--gold-m)">
+        <strong style="color:var(--gold-dim)">如何使用</strong>
+        回到对话主界面，点击输入框左侧的图片图标上传截图，Sia 会自动进入解读模式。
+      </div>
+      <button class="tool-cta" onclick="closeAtlas();setTimeout(()=>document.getElementById('imgInput').click(),300)">去上传截图 →</button>
+    </div>
+  </div>
+
+  <!-- Fortune module -->
+  <div class="atlas-content" id="moduleFortune">
+    <div class="atlas-back" onclick="backToHub()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      返回工具箱
+    </div>
+    <div class="tool-panel" id="fortunePanel"></div>
+  </div>
+
+  <!-- Legal module -->
+  <div class="atlas-content" id="moduleLegal">
+    <div class="atlas-back" onclick="backToHub()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      返回工具箱
+    </div>
+    <div class="tool-panel">
+      <div class="tool-intro">
+        <strong>法律证据箱</strong>
+        这个模块正在开发中。上线后，你可以上传聊天记录、合同、通话录音等，Sia 会自动提取其中具有法律效力的关键证据点，并提示保全方式。
+      </div>
+      <div class="legal-item">
+        <div class="legal-icon">📋</div>
+        <div class="legal-text"><strong>聊天记录取证</strong>自动识别威胁、承诺、财务往来等法律敏感内容</div>
+      </div>
+      <div class="legal-item">
+        <div class="legal-icon">📄</div>
+        <div class="legal-text"><strong>合同条款分析</strong>标记不平等条款，提示谈判或规避建议</div>
+      </div>
+      <div class="legal-item">
+        <div class="legal-icon">🔐</div>
+        <div class="legal-text"><strong>证据保全指引</strong>指导如何合法留存证据，防止对方删除</div>
+      </div>
+      <div class="coming-soon-badge">· 预计下季度上线 ·</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL MODAL -->
+<div class="paywall-overlay" id="paywallModal" style="display:none">
+  <div class="paywall">
+    <button class="paywall-close" onclick="closePaywall()">×</button>
+    <svg class="paywall-icon" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="25" stroke="#C4A882" stroke-width="0.8"/>
+      <circle cx="26" cy="26" r="17" stroke="#C4A882" stroke-width="0.5" stroke-dasharray="2 3"/>
+      <circle cx="26" cy="26" r="3.5" fill="#C4A882"/>
+      <polygon points="26,6 23.8,26 26,22 28.2,26" fill="#9A7D5A"/>
+      <polygon points="26,46 23.8,26 26,30 28.2,26" fill="#D8D4CC"/>
+    </svg>
+    <div class="paywall-title">Sia 深度精算</div>
+    <div class="paywall-sub">你已经说了很多了。<br>接下来的分析，需要更精准的工具。</div>
+    <div class="paywall-feats">
+      <div class="paywall-feat">
+        <div class="paywall-feat-icon">◈</div>
+        <span>图片截图智能解读 · 识别情绪操控</span>
+      </div>
+      <div class="paywall-feat">
+        <div class="paywall-feat-icon">◈</div>
+        <span>职场数据深度比对 · 精准薪酬评估</span>
+      </div>
+      <div class="paywall-feat">
+        <div class="paywall-feat-icon">◈</div>
+        <span>专属顾问一对一 · 私信直达 Sia</span>
+      </div>
+    </div>
+    <button class="paywall-cta" onclick="handlePaywallCTA()">私信 Sia 开启内测</button>
+    <a class="paywall-skip" onclick="closePaywall()">先继续聊聊</a>
+  </div>
+</div>
+
+<!-- RISK MODAL -->
+<div class="modal-overlay" id="riskModal" style="display:none" onclick="closeRiskModal(event)">
+  <div class="modal">
+    <div class="modal-tag">Sia 风险预警</div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-items" id="modalItems"></div>
+    <button class="modal-close" onclick="document.getElementById('riskModal').style.display='none'">我已了解，继续</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────
+const INDUSTRY_DB={
+  "互联网":{pay_gap:.82,maternity:2,remote:.45,female_leadership:.23,salary:{junior:[8000,15000],mid:[15000,30000],senior:[30000,60000]},notes:"大厂执行较好，中小厂差异大。生育期晋升存在隐性壁垒。",verify:"https://www.zhipin.com"},
+  "教育":{pay_gap:.91,maternity:4,remote:.30,female_leadership:.48,salary:{junior:[5000,9000],mid:[9000,18000],senior:[18000,35000]},notes:"公立学校生育保障最好，培训机构差异极大，需按实际情况判断。",verify:"https://www.zhipin.com"},
+  "医疗":{pay_gap:.88,maternity:4,remote:.05,female_leadership:.41,salary:{junior:[6000,12000],mid:[12000,25000],senior:[25000,80000]},notes:"医生晋升周期长，护理女性比例高但薪资天花板相对低。",verify:"https://www.zhipin.com"},
+  "金融":{pay_gap:.79,maternity:3,remote:.20,female_leadership:.28,salary:{junior:[8000,16000],mid:[16000,35000],senior:[35000,100000]},notes:"券商投行性别薪资差距明显，银行柜员女性多但晋升通道窄。",verify:"https://www.zhipin.com"},
+  "公务员":{pay_gap:.95,maternity:5,remote:.05,female_leadership:.35,salary:{junior:[4000,8000],mid:[8000,15000],senior:[15000,30000]},notes:"生育保障全行业最好，部分岗位有性别限制，报名前务必确认。",verify:"https://www.scs.gov.cn"},
+  "电商/新媒体":{pay_gap:.87,maternity:2,remote:.55,female_leadership:.45,salary:{junior:[6000,12000],mid:[12000,25000],senior:[25000,60000]},notes:"灵活度高，但创业型公司生育保障薄弱，需提前评估。",verify:"https://www.zhipin.com"},
+  "制造业":{pay_gap:.76,maternity:3,remote:.05,female_leadership:.18,salary:{junior:[4000,7000],mid:[7000,14000],senior:[14000,28000]},notes:"管理岗女性比例低，一线工人占比高，晋升通道较窄。",verify:"https://www.zhipin.com"},
+  "法律":{pay_gap:.81,maternity:3,remote:.25,female_leadership:.32,salary:{junior:[6000,12000],mid:[12000,30000],senior:[30000,100000]},notes:"律所收入方差极大，法务岗相对稳定，入门需考取资格证。",verify:"https://www.zhipin.com"},
+  "心理咨询":{pay_gap:.93,maternity:4,remote:.60,female_leadership:.62,salary:{junior:[3000,8000],mid:[8000,20000],senior:[20000,60000]},notes:"入门到成熟期路径较长，但成熟后收入弹性大，适合灵活工作。",verify:"https://www.zhipin.com"},
+  "设计/创意":{pay_gap:.85,maternity:2,remote:.50,female_leadership:.40,salary:{junior:[6000,11000],mid:[11000,22000],senior:[22000,50000]},notes:"自由职业可能性高，平台接单可作为过渡或兼职方案。",verify:"https://www.zhipin.com"}
+};
+
+const RISK_ALERTS={
+  "借钱":{title:"借钱之前",items:[
+    {head:"白纸黑字",body:"无论关系多近，借款超过500元务必签书面借条，注明金额、还款时间。"},
+    {head:"财务隔离",body:"借出后保留自己的独立储备底线，不因借钱影响自身的紧急备用金。"},
+    {head:"感情测试",body:"真正在乎你的人不会因为你设定边界而疏远你。借钱的态度是识人的样本。"}
+  ]},
+  "结婚":{title:"婚前清单",items:[
+    {head:"财产约定",body:"婚前财产公证不是不信任，是双方对等保护自己。尤其涉及房产、存款、股权。"},
+    {head:"独立账户",body:"婚后保持一个属于自己的独立账户，维持基本的经济独立能力。"},
+    {head:"职业连续",body:"婚姻不应中断你的职业发展。提前和对方明确家务、育儿的分工预期。"}
+  ]},
+  "备孕":{title:"备孕前的权益核查",items:[
+    {head:"劳动合同",body:"确认合同类型和到期时间，了解公司的生育政策，包括产假天数和薪资保障。"},
+    {head:"社保缴纳",body:"生育津贴与社保缴纳时长直接挂钩，确认缴纳记录是否符合当地领取条件。"},
+    {head:"职位保障",body:"了解公司返岗政策，书面确认岗位不会因生育被调整或变相降职。"}
+  ]},
+  "离职":{title:"离职前的财务核查",items:[
+    {head:"现金储备",body:"建议离职前存够6个月生活费用作为缓冲，不在财务压力下被迫接受低质量工作。"},
+    {head:"社保连续",body:"了解离职后社保断缴对你所在城市购房、落户资格的影响，做好衔接规划。"},
+    {head:"在职找工作",body:"在职状态下谈判薪资的底气比裸辞后高出30%-50%，建议同步投递后再提辞职。"}
+  ]}
+};
+
+const TRIGGERS={
+  career_change:["转行","换工作","换个方向","换行业"],
+  resignation:["辞职","不想干","离职","裸辞","想走"],
+  exam:["考公","考编","上岸","备考","公务员"],
+  financial:["没钱","工资低","涨薪","被裁","薪资","钱不够"],
+  breakup:["分手","失恋","前任","被甩","放弃我"],
+  longdistance:["异地","不在身边","见不到","距离"],
+  marriage:["婚姻","老公","婆婆","彩礼","结婚","离婚","全职","带孩子","回家"],
+  family:["情感","委屈","累","关系","感情","喜欢","爱"]
+};
+
+// ── API ───────────────────────────────────────────────────────────────
+const USE_API=false;
+const API_ENDPOINT="/api/chat";
+const VISION_API_KEY="";
+
+async function analyzeImage(base64Data,userText){
+  if(!VISION_API_KEY)return null;
+  try{
+    const mediaType=base64Data.match(/data:([^;]+);/)?.[1]||"image/jpeg";
+    const base64=base64Data.split(",")[1];
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":VISION_API_KEY,"anthropic-version":"2023-06-01"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",max_tokens:600,temperature:0.4,
+        system:`你是 Sia，专注支持女性的情感与决策助手。用户上传了截图，请：1.描述核心内容 2.识别权力关系与情绪操控 3.温柔清醒地给出建议。中文，200字内，分段。`,
+        messages:[{role:"user",content:[
+          {type:"image",source:{type:"base64",media_type:mediaType,data:base64}},
+          {type:"text",text:userText||"请帮我解读这张图片的内容"}
+        ]}]
+      })
+    });
+    if(!res.ok)throw new Error("err");
+    return(await res.json()).content?.[0]?.text||null;
+  }catch(e){return null;}
+}
+
+async function callLLM(msg,ctx){
+  if(!USE_API)return null;
+  try{
+    const r=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:msg,context:ctx,temperature:0.4})});
+    return(await r.json()).reply;
+  }catch(e){return null;}
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let convState={phase:"listen",intent:null,industry:null,turnCount:0,userAskedAdvice:false};
+let pendingImage=null;
+let paywallShown=false;
+const FREE_TURNS=5; // 允许5轮自由对话后触发付费墙
+
+const ADVICE_SIGNALS=["怎么办","怎么做","建议","该怎么","帮我想","路径","下一步","分析一下","给我一些","有什么方法"];
+
+function detectIntent(t){for(const[k,v]of Object.entries(TRIGGERS)){if(v.some(w=>t.includes(w)))return k;}return"general";}
+function detectIndustry(t){return Object.keys(INDUSTRY_DB).find(k=>t.includes(k))||null;}
+function wantsAdvice(t){return ADVICE_SIGNALS.some(s=>t.includes(s));}
+function detectRisk(t){return Object.keys(RISK_ALERTS).find(k=>t.includes(k))||null;}
+
+// ── PAYWALL ───────────────────────────────────────────────────────────
+function tryShowPaywall(force=false){
+  if(paywallShown)return false;
+  if(force||convState.turnCount>=FREE_TURNS){
+    paywallShown=true;
+    setTimeout(()=>{document.getElementById("paywallModal").style.display="flex";},400);
+    return true;
+  }
+  return false;
+}
+function closePaywall(){document.getElementById("paywallModal").style.display="none";}
+function handlePaywallCTA(){
+  closePaywall();
+  addMessage(`<p>好的，私信入口即将开放。</p><p>你可以先扫描下方二维码加入内测候补，Sia 上线第一时间通知你。</p><div class="disclaimer">内测名额有限，优先录取深度用户</div>`,"ai");
+}
+
+// ── EMPATHY POOLS ─────────────────────────────────────────────────────
+// 前两轮使用更有深度的共情语言
+const EF_DEEP={
+  career_change:[
+    "想换方向这件事，很多人会轻描淡写地说'想清楚了再动'。但我想先问你：是什么让你到了今天才说出这句话？在说'转行'之前，你一个人撑了多久？",
+    "换工作这个念头出现，很少是突然的。通常是某一天终于发现——你为一个不值得的地方消耗了太多。你现在是什么感觉？"
+  ],
+  resignation:[
+    "想辞职，有时候不是软弱，是你终于不愿意再低价出售自己的时间了。能告诉我，是什么让你今天说出这句话的？",
+    "我听到了。辞职这两个字背后，通常不只是一件事。是哪根稻草压下来，让你觉得不说出来不行了？"
+  ],
+  exam:[
+    "考公这条路，有人是真的想要稳定，有人是想给自己一个喘息的理由。你是哪种？或者两者都有？",
+    "你在考虑考公，说明你对未来的不确定感已经到了某个临界点。能跟我说说，是什么让你开始认真考虑这条路？"
+  ],
+  financial:[
+    "钱的压力是最诚实的，它会放大所有其他的不安全感。你现在说'钱不够'，背后具体是什么让你最焦虑——是不够用，还是感觉自己被低估了？",
+    "不是矫情，钱的问题会真实影响你的每一个决定。你说钱的问题，是临时周转，还是长期感到憋屈？这两种，答案很不一样。"
+  ],
+  breakup:[
+    "分手之后，有一种很特殊的空——不是悲伤，是突然不知道自己是谁了。你现在是哪种感觉？",
+    "说出'分手'这两个字，通常已经在心里演练了很多遍了。你现在还好吗？今天发生什么了？"
+  ],
+  longdistance:[
+    "异地里最难的，不是见不到，是那种'我需要你，但你不在，我甚至不能说出口'的感觉。你今天是怎么了？",
+    "看到别人在一起甜甜蜜蜜，那种对比有时候比想他本身更难受。你最近怎么了？"
+  ],
+  marriage:[
+    "婚姻里的累，很少是某一件事的问题，更多是一种'我一直在付出，但从来没有被真正看见'的感觉。你最压着你的是哪一部分？",
+    "在婚姻里感到疲惫，这不是你的错，也不是'正常'就该忍受的。你愿意说说，是从什么时候开始有这种感觉的？"
+  ],
+  family:[
+    "感情里受委屈，有时候连说给谁听都没有，因为怕被评判，怕被说太敏感。你现在怎么样，还好吗？",
+    "你现在说出来，已经很不容易了。我在听，不急，你想从哪里说起？"
+  ],
+  general:[
+    "嗯，我在听。你想从哪里说起？",
+    "没关系，慢慢说。有时候最重要的事，反而最难开口。"
+  ]
+};
+
+const EF={
+  career_change:["听到你说想转行，我第一反应不是帮你分析，而是想问你——这个念头憋了多久了？","想换个方向，说起来轻巧，但背后那种纠结真的很消耗人。你现在是什么感觉？","转行这两个字说出来，其实挺需要勇气的。是什么让你开始认真想这件事？"],
+  resignation:["想辞职……这种感觉我懂，有时候不是真的想走，是真的撑不住了。你现在怎么样？","辞职的念头反复出现，一定有什么让你很累。能说说是什么压垮你的吗？","不用解释为什么想辞职，先说说你现在的状态——是那种麻木的累，还是很委屈的那种？"],
+  exam:["考公这条路，不同的人走的理由差别很大。你是因为觉得稳定，还是有什么别的让你心动？","最近在认真考虑考公啊。这个想法是突然冒出来的，还是酝酿很久了？","考公……说说是什么让你觉得这条路适合你？我想先了解你的情况。"],
+  financial:["钱的问题真的很让人焦虑，这不是矫情，是很实在的压力。现在是到了什么地步？","工资的事……有时候不只是钱的问题，更多是一种不被看见的感觉。你是哪种情况？","听到你说这个，我想先知道你现在是什么状态——是临时周转困难，还是长期感到憋屈？"],
+  breakup:["分手了……光是说出这三个字就已经很不容易了。你现在怎么样，还好吗？","这种难受真的没有办法用道理消化掉的。你现在是那种心里空空的感觉，还是很乱？","不用假装没事。先说说，今天发生什么了？"],
+  longdistance:["异地真的很消耗人，那种明明在一起却像一个人的感觉……你最近怎么样？","看到别人都在一起，就会更想他，这种对比特别难受。你今天是怎么了？","异地最难的不是距离，是那种'我需要你但你不在'的无力感。你现在是这种感觉吗？"],
+  marriage:["婚姻里的累，很多时候说不清楚，但就是很重。你最近怎么了？","在婚姻里感觉很累……这句话背后一定有很多事。你愿意说说吗？","先不急着想怎么解决。你现在最压着你的是哪一部分？"],
+  family:["感情里的事，说出来就已经很不容易了。你现在怎么样，还好吗？","听你说这些，我心里有点沉。你最近睡得好吗，有没有人陪着你？","先不急着想怎么解决。你现在最难受的是哪一部分？"],
+  general:["嗯，我在听。你想从哪里说起？","没关系，慢慢说。","听起来你现在承受着一些东西。能多说一点吗？"]
+};
+
+const EE={
+  career_change:["你现在对转去哪个方向有没有一点点模糊的感觉，还是完全没头绪？","你现在最担心的是什么——是不知道转哪里，还是害怕转了之后会后悔？","转行最难的部分，很多时候不是方向，而是那个'万一'。你的'万一'是什么？"],
+  resignation:["你说想离职，是那里有什么具体的事情让你很难受，还是整体都很累了？","如果现在让你说一件让你最想走的事，是什么？","辞职之后，你最希望得到的是什么——是喘口气，还是有个更明确的方向？"],
+  exam:["考公这条路，你现在最大的顾虑是什么——是考不上，还是考上了之后会不会后悔？","你现在是在职想备考，还是有一段时间可以全心准备？","你对哪个方向的公职比较感兴趣，还是说目前先求稳？"],
+  financial:["你觉得现在的问题是行业整体待遇低，还是你个人被低估了？","你有没有大概看过同岗位在市场上的薪资水平？感觉差距大吗？","你现在是更想提高这份工作的收入，还是在考虑换个方向？"],
+  breakup:["分手之后那段时间，你现在最难熬的是哪种感觉——是想他，还是那种不知道自己是谁了？","你们在一起多久了？","是你提的，还是他提的？——不是要评判，只是想更了解你的处境。"],
+  longdistance:["异地最难的那部分，是什么让你今天特别有感触？","你们多久能见一次？","你现在是觉得撑得住，还是开始觉得很难了？"],
+  marriage:["婚姻里让你觉得累的，是某一件具体的事，还是一种说不清楚的整体感觉？","这种状态是最近才有的，还是已经持续一段时间了？","你现在最需要的是什么——被听见，还是想一起想想有没有什么可以改变的？"],
+  family:["能说说最让你疲惫的是什么吗——是那种被忽视的感觉，还是有些事情一直没有被解决？","你现在是想先倾诉一下，还是希望我们一起想想有没有什么可以改变的？","这种状态持续多久了？有没有过比较好的时候？"],
+  general:["现在最压在你心上的是哪一件事？","你今天来说这些，是需要有人听你说，还是也想一起想想怎么办？","能多说一点吗？"]
+};
+
+function buildAdvice(intent,industry){
+  const ind=industry?INDUSTRY_DB[industry]:null;
+  const a={
+    career_change:{intro:"好，你准备好聊这个了，那我说说我的一些想法——",points:ind?[`${industry}这个方向，女性薪酬比率大概在${Math.round(ind.pay_gap*100)}%，${ind.pay_gap>=.88?'性别差距相对小':'有一定差距，入职前值得多打听'}`,`生育保障评级${['','较差','一般','中等','较好','最好'][ind.maternity]}，${ind.maternity>=4?'这点不错':'可能需要提前了解'}`,"有一种思路：先用业余时间试水这个行业，感受氛围，再决定要不要全职切换","不用一步到位，先找到一个可以迈出去的小口子就好"]:["先不用想'转去哪里'，先想想你在现在的工作里最不想失去的是什么——那个东西是你选下一步的锚点","可以列三个你觉得还不排斥的方向，每个找5个真实的JD读一读","转行很少是一次跳跃，更多是一步步平移——不用给自己太大压力"],followups:["我想了解某个具体行业","我还没想好方向","先说说我的背景"]},
+    resignation:{intro:"嗯，我来说说我的想法，你自己判断——",points:["在辞职之前先同步投简历，在职找工作比裸辞之后找，谈判空间大很多","如果是因为某件具体的事撑不下去，先想想这件事有没有可能通过谈判改变","社保连续缴纳在一些城市和购房资格挂钩，了解一下实际情况","在走之前把能用的牌都用一用，更不容易留遗憾"],followups:["我已经忍了很久了","我还没存够钱","我在投简历了"]},
+    exam:{intro:"好，说说考公这条路的实际情况——",points:["公务员薪酬性别差距最小，生育保障是各行业里最好的","省考比国考相对好进一些，第一次考可以先从省考或事业编开始","备考周期大概6到12个月，刷真题比背资料更重要","部分岗位对专业、性别有限制，报名前确认好"],followups:["我是应届生","我是在职备考","我不确定考哪个方向"]},
+    financial:{intro:"我来说说我的想法，不是标准答案——",points:["先在Boss直聘或猎聘上搜同岗位薪资，看看自己是被这家公司低估，还是行业整体就这样","如果是被公司低估：谈薪是正当的事，以市场数据为依据","如果是行业天花板问题：换公司意义不大，更值得考虑技能升级或行业平移",ind?`${industry}行业中级薪资大概在${formatSalary(ind.salary.mid)}/月，可以对照`:""].filter(Boolean),followups:["我想准备谈薪资","我想了解行业情况","我想换方向"]},
+    breakup:{intro:"分手之后那段时间真的很难，我没办法给你一个'怎么走出来'的公式，但——",points:["不用逼自己'想开'或者'快点好'。那种难受是真实的，不需要赶走它","先把每天能做到的事情缩到最小——吃饭、睡觉、出门","如果脑子里一直在复盘'哪里出了问题'，可以把它写下来，不用立刻找答案","你不需要现在就知道接下来怎么办。先把今天过完就好"],followups:["我还想说说他","我不知道该怎么过","我只是需要有人听"]},
+    longdistance:{intro:"异地这件事，没有完美的答案，但有些事情也许可以让它好过一点——",points:["那种孤独感有时候不是感情出了问题，是正常人的正常需求没有被满足","试着告诉他你需要什么——不是抱怨，是'我需要你做到这个'","给自己在这里的生活找一些不依赖他的支点","异地能不能走下去，很大程度上取决于你们对'终点'的预期是不是一致的"],followups:["我们还没聊过终点","我已经很努力维持了","我不确定要不要继续"]},
+    marriage:{intro:"婚姻里的累，很多时候不是一件事，是很多小事积累成的重量——",points:["感到累，通常意味着付出和被看见之间有落差","把让你最累的那一件事单独拎出来，而不是试图一次解决所有","如果你在想要不要继续：这个问题不需要今天就有答案，但值得认真对待","如果涉及财产或法律层面，了解自己的权利是保护自己，不是'走到那一步了'"],followups:["我想说说具体的事","我在考虑要不要离开","我只是想被听见"]},
+    family:{intro:"我不会告诉你该怎么做，但可以说说我注意到的一些东西——",points:["感到疲惫，很多时候是因为一直在给，但没有被接住。这不是你的问题","先把你自己的底线想清楚——不是用来对抗谁，是让你知道什么是你能接受的","如果涉及财务，个人账户保持独立是基本的自我保护","如果靠自己想不清楚，找一个女性友好的咨询师聊聊是很值得的"],followups:["我想继续聊","我想了解法律方面","我现在只是需要说说"]},
+    general:{intro:"我来说说我的想法，你觉得有用的话可以参考——",points:["你说的这些值得认真对待。","有什么我可以帮你具体想想的吗？"],followups:["继续聊","换个话题"]}
+  };
+  return a[intent]||a.family;
+}
+
+const P={soft:["唉，","哎，","嗯……","哦——"],warm:["心疼你。","真的辛苦了。","听到这里我有点心酸。","你已经很不容易了。","这真的不好受。"],bridge:["继续说，我在。","还有吗，我想听。","你说，我不急。","慢慢来，不用整理好再说。"]};
+const rP={soft:-1,warm:-1,bridge:-1};
+function gP(t){const pool=P[t];let i;do{i=Math.floor(Math.random()*pool.length);}while(i===rP[t]&&pool.length>1);rP[t]=i;return pool[i];}
+function wrapEmotion(text){return`<p>${gP("soft")}${text}</p><p>${gP("warm")}</p><p>${gP("bridge")}</p>`;}
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// ── RESPONSE ENGINE ───────────────────────────────────────────────────
+function buildResponse(txt){
+  const di=detectIntent(txt),ind=detectIndustry(txt);
+  if(di!=="general"&&!convState.intent)convState.intent=di;
+  if(ind)convState.industry=ind;
+  if(wantsAdvice(txt))convState.userAskedAdvice=true;
+  convState.turnCount++;
+
+  const intent=convState.intent||di;
+
+  if(convState.userAskedAdvice||convState.phase==="advise"){
+    convState.phase="advise";
+    return buildAdviceHTML(intent,convState.industry);
+  }
+
+  // 前两轮使用深度共情语言
+  if(convState.phase==="listen"){
+    convState.phase="explore";
+    const deepPool=EF_DEEP[intent]||EF_DEEP.general;
+    const line=rand(deepPool);
+    return wrapEmotion(line);
+  }
+
+  if(convState.phase==="explore"){
+    convState.phase="ready_check";
+    // 第二轮：深度引导
+    const pool2=EF[intent]||EF.general;
+    const line=rand(pool2);
+    return`<p>${line}</p><div class="quick-replies"><button class="qr-btn" onclick="sendQuick('帮我想想怎么办')">准备好了，帮我想想</button><button class="qr-btn" onclick="sendQuick('我还想多说说')">我还想多说说</button></div>`;
+  }
+
+  if(convState.phase==="ready_check"){
+    convState.phase="advise";
+    return`<p>${gP("warm")}</p><p>${gP("bridge")}</p><div class="quick-replies"><button class="qr-btn" onclick="sendQuick('好，帮我分析一下')">好，帮我分析一下</button><button class="qr-btn" onclick="sendQuick('我还没准备好')">我还没准备好</button></div>`;
+  }
+
+  return buildAdviceHTML(intent,convState.industry);
+}
+
+function buildAdviceHTML(intent,industry){
+  const data=buildAdvice(intent,industry),ind=industry?INDUSTRY_DB[industry]:null;
+  let h=`<p>${data.intro}</p><div class="step-card"><div class="step-header"><div class="step-dot"></div>一些想法，供你参考</div><div class="step-body"><ul>${data.points.map(p=>`<li>${p}</li>`).join("")}</ul></div></div>`;
+  if(ind)h+=`<a class="verify-link" href="${ind.verify}" target="_blank">→ 去 Boss 直聘核验${industry}薪资数据</a>`;
+  h+=`<div class="disclaimer">这些只是思路参考，最终怎么做还是你说了算</div>`;
+  if(data.followups)h+=`<div class="quick-replies">${data.followups.map(q=>`<button class="qr-btn" onclick="sendQuick('${q}')">${q}</button>`).join("")}</div>`;
+  return h;
+}
+
+// ── IMAGE ─────────────────────────────────────────────────────────────
+function handleImgBtnClick(){
+  // 图片上传触发付费墙
+  if(tryShowPaywall(true))return;
+  document.getElementById("imgInput").click();
+}
+
+function handleImageSelect(e){
+  const f=e.target.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{pendingImage=ev.target.result;document.getElementById("imgPreview").src=pendingImage;document.getElementById("imgPreviewWrap").classList.add("visible");};
+  reader.readAsDataURL(f);
+}
+function removeImage(){pendingImage=null;document.getElementById("imgPreviewWrap").classList.remove("visible");document.getElementById("imgInput").value="";}
+
+// ── RISK MODAL ────────────────────────────────────────────────────────
+function showRiskModal(kw){
+  const d=RISK_ALERTS[kw];if(!d)return;
+  document.getElementById("modalTitle").textContent=d.title;
+  document.getElementById("modalItems").innerHTML=d.items.map((item,i)=>`<div class="modal-item"><div class="modal-num">0${i+1}</div><div class="modal-text"><strong>${item.head}</strong>${item.body}</div></div>`).join("");
+  document.getElementById("riskModal").style.display="flex";
+}
+function closeRiskModal(e){if(e.target.id==="riskModal")document.getElementById("riskModal").style.display="none";}
+
+// ── ATLAS ─────────────────────────────────────────────────────────────
+function openAtlas(){
+  document.getElementById("atlasOverlay").classList.add("open");
+  document.getElementById("atlasDrawer").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeAtlas(){
+  document.getElementById("atlasOverlay").classList.remove("open");
+  document.getElementById("atlasDrawer").classList.remove("open");
+  document.body.style.overflow="";
+  backToHub();
+}
+function showAtlasModule(name){
+  document.getElementById("atlasHub").style.display="none";
+  document.querySelectorAll(".atlas-content").forEach(el=>el.classList.remove("active"));
+  const m=document.getElementById("module"+name.charAt(0).toUpperCase()+name.slice(1));
+  if(m)m.classList.add("active");
+  // career module triggers paywall
+  if(name==="career")renderCareerAtlas();
+  if(name==="fortune")renderFortune();
+}
+function backToHub(){
+  document.getElementById("atlasHub").style.display="";
+  document.querySelectorAll(".atlas-content").forEach(el=>el.classList.remove("active"));
+}
+
+// Career atlas render (preserved Sia 1.0 design)
+function renderCareerAtlas(){
+  const grid=document.getElementById("atlasGrid");
+  if(grid.children.length>0)return; // already rendered
+  Object.entries(INDUSTRY_DB).forEach(([name,data])=>{
+    const card=document.createElement("div");card.className="industry-card";
+    card.innerHTML=`<div class="card-top" onclick="toggleCard(this.parentElement)"><div class="industry-name">${name}</div><div class="card-badges"><span class="ibadge ${payGapBadge(data.pay_gap)}">薪酬 ${Math.round(data.pay_gap*100)}%</span><span class="ibadge ${maternityBadge(data.maternity)}">生育${maternityLabel(data.maternity)}</span></div></div><div class="card-detail"><div class="metrics"><div class="metric"><div class="metric-label">薪酬性别比</div><div class="metric-value">${Math.round(data.pay_gap*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.pay_gap*100}%"></div></div></div><div class="metric"><div class="metric-label">生育保障</div><div class="metric-value">${data.maternity}<span class="metric-unit">/5</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.maternity/5*100}%"></div></div></div><div class="metric"><div class="metric-label">远程比例</div><div class="metric-value">${Math.round(data.remote*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.remote*100}%"></div></div></div><div class="metric"><div class="metric-label">女性管理层</div><div class="metric-value">${Math.round(data.female_leadership*100)}<span class="metric-unit">%</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${data.female_leadership*100}%"></div></div></div></div><div class="salary-row"><span>初级</span><span class="salary-val">${formatSalary(data.salary.junior)} /月</span></div><div class="salary-row"><span>中级</span><span class="salary-val">${formatSalary(data.salary.mid)} /月</span></div><div class="salary-row"><span>高级</span><span class="salary-val">${formatSalary(data.salary.senior)} /月</span></div><div class="card-note">${data.notes}</div><div class="card-cta"><button class="cta-btn cta-chat" onclick="goChat('${name}')">与 Sia 深聊</button><a class="cta-btn cta-verify" href="${data.verify}" target="_blank">核验薪资 →</a></div></div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(card){
+  const was=card.classList.contains("expanded");
+  document.querySelectorAll(".industry-card.expanded").forEach(c=>c.classList.remove("expanded"));
+  if(!was){
+    card.classList.add("expanded");
+    // 展开数据表也触发付费墙
+    tryShowPaywall(true);
+  }
+}
+function goChat(industry){closeAtlas();sendQuick(`我想了解${industry}行业的转行机会`);}
+
+// Fortune panel (lightweight, clearly labeled as entertainment)
+const FORTUNES=[
+  {sign:"♈",name:"白羊·本周",title:"行动窗口期",text:"当下能量适合推进一直在拖的事情。但注意：冲动和决断是两回事。在说出'我要离职'之前，先问自己：我的备用金够撑几个月？",tip:"今日避雷：别在情绪最激动的时候发那条消息。"},
+  {sign:"♉",name:"金牛·本周",title:"财务清醒时刻",text:"这一周你对钱的感知会特别敏锐。适合做一件事：把你认为理所当然的那些'付出'，换算成市场价格，看看自己是否在免费劳动。",tip:"今日避雷：别因为'不好意思'接受不合理的条件。"},
+  {sign:"♊",name:"双子·本周",title:"信息过载，选择困难",text:"你可能同时在考虑三个方向，每个都觉得有道理。这周适合做的事：把三个选项的最坏情况分别写下来，看哪个最坏情况你最能接受。",tip:"今日避雷：别被别人的选择影响你自己的判断。"},
+  {sign:"♋",name:"巨蟹·本周",title:"情绪感知力超强",text:"这一周你对周围人的情绪变化极其敏感。提醒：感知别人的情绪是天赋，但不是你的责任。你不需要去'修复'每一个感受到的问题。",tip:"今日避雷：别把别人的坏情绪揽到自己身上。"},
+  {sign:"♌",name:"狮子·本周",title:"自我价值重估期",text:"你正在重新审视自己值多少、配得上什么。结论是：你低估自己的概率远大于高估。试着以'如果是我最欣赏的朋友来谈判，她会要多少'为参考。",tip:"今日避雷：别在别人的质疑面前快速认错。"},
+  {sign:"♍",name:"处女·本周",title:"细节中藏着答案",text:"你可能注意到了某个一直被忽视的细节，它比你意识到的更重要。这周适合复盘：在那段关系或那份工作里，最开始让你不舒服的，是哪一个时刻？",tip:"今日避雷：别用'理解对方'来说服自己忽略警觉。"},
+  {sign:"♎",name:"天秤·本周",title:"边界重建时刻",text:"你一直在寻求平衡，但真正的平衡不是两边各让一步——而是明确自己的底线在哪里，然后不动。这周适合做的事：把那个你已经退步太多次的事情，停下来。",tip:"今日避雷：别再为'大局'牺牲你的核心利益。"},
+  {sign:"♏",name:"天蝎·本周",title:"信息不对称的清算",text:"你比任何人都更快察觉到谁在说谎、谁在隐瞒。这周信任你的直觉——不是偏执，是数据。如果感觉不对，就是不对。",tip:"今日避雷：别为了维持'表面和平'假装没看见。"},
+  {sign:"♐",name:"射手·本周",title:"自由代价的精算",text:"你渴望自由，但自由是有成本的。这周适合做的事：把你想要的'理想状态'写下来，然后算算实现它需要什么——时间、钱、关系，三样都算。",tip:"今日避雷：别用逃避来代替真正的决断。"},
+  {sign:"♑",name:"摩羯·本周",title:"长期主义重校准",text:"你习惯用长远眼光看问题，但注意：有时候'长远'是用来合理化当下的将就。这周问自己：五年后，你会为今天的忍耐感谢自己，还是后悔？",tip:"今日避雷：别让'稳定'成为不改变的借口。"},
+  {sign:"♒",name:"水瓶·本周",title:"系统性思维启动",text:"你正在用更宏观的视角看一件事。好消息是你看到了别人看不到的东西；坏消息是你容易忘记情绪也是数据。把你现在的感受也纳入你的'分析框架'。",tip:"今日避雷：别因为'讲道理'而否认自己的委屈。"},
+  {sign:"♓",name:"双鱼·本周",title:"直觉验证期",text:"你有一个很强的直觉，但你还没有勇气说出来。这周适合做的事：把那个你一直在'应该不是这样吧'的念头，认真对待一次。",tip:"今日避雷：别用善意解读来掩盖真实的不舒服。"}
+];
+
+function renderFortune(){
+  const panel=document.getElementById("fortunePanel");
+  if(panel.children.length>0)return;
+  const f=FORTUNES[new Date().getMonth()%12];
+  panel.innerHTML=`
+    <div class="fortune-card">
+      <div class="fortune-sign">${f.sign} ${f.name}</div>
+      <div class="fortune-title">${f.title}</div>
+      <div class="fortune-text">${f.text}</div>
+      <div class="fortune-text" style="margin-top:10px;color:var(--gold-dim);font-style:italic">${f.tip}</div>
+      <div class="fortune-disclaimer">· 娱乐参考，不构成任何建议 · 理智是最高级的护短 ·</div>
+    </div>
+    <div class="tool-intro">
+      <strong>Sia 的立场</strong>
+      星座不能决定你的人生，但有时候一个外部视角，能让你说出那个你一直知道、但没勇气说的答案。
+    </div>
+    <button class="tool-cta" onclick="closeAtlas();sendQuick('我想聊聊我现在的处境')">和 Sia 深聊 →</button>`;
+}
+
+// ── UI CORE ───────────────────────────────────────────────────────────
+const msgEl=document.getElementById("messages");
+
+function addMessage(html,role){
+  const w=document.createElement("div");w.className=`message ${role}`;
+  const av=document.createElement("div");av.className=`avatar ${role==="ai"?"ai":"user-av"}`;av.textContent=role==="ai"?"S":"我";
+  const b=document.createElement("div");b.className=`bubble ${role}`;b.innerHTML=html;
+  w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
+}
+
+// Skeleton loading (AI "calculating")
+function showSkeleton(){
+  const w=document.createElement("div");w.className="message ai";w.id="skeleton-indicator";
+  const av=document.createElement("div");av.className="avatar ai";av.textContent="S";
+  const b=document.createElement("div");b.className="skeleton-bubble";
+  b.innerHTML=`<div class="skel-tag"></div><div class="skel-line" style="width:88%"></div><div class="skel-line" style="width:72%"></div><div class="skel-line"></div>`;
+  w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
+}
+function hideSkeleton(){const el=document.getElementById("skeleton-indicator");if(el)el.remove();}
+
+// ── SEND ──────────────────────────────────────────────────────────────
+async function handleSend(){
+  const input=document.getElementById("chatInput");
+  const text=input.value.trim();
+  if(!text&&!pendingImage)return;
+  const welcome=msgEl.querySelector(".welcome");if(welcome)welcome.remove();
+  if(text){const rk=detectRisk(text);if(rk)setTimeout(()=>showRiskModal(rk),300);}
+  const capturedImage=pendingImage;
+  if(capturedImage){
+    const w=document.createElement("div");w.className="message user";
+    const av=document.createElement("div");av.className="avatar user-av";av.textContent="我";
+    const b=document.createElement("div");b.className="bubble user";
+    b.innerHTML=`${text?`<p>${text}</p>`:""}<img src="${capturedImage}" class="bubble-img">`;
+    w.appendChild(av);w.appendChild(b);msgEl.appendChild(w);msgEl.scrollTop=msgEl.scrollHeight;
+    removeImage();
+  }else{addMessage(text,"user");}
+  input.value="";input.style.height="38px";
+  showSkeleton();
+  const delay=1100+Math.random()*700;
+  if(capturedImage){
+    setTimeout(async()=>{
+      hideSkeleton();
+      // 图片上传 → 付费墙 (USE_API=false 时)
+      addMessage(`<div class="vision-card"><div class="vision-label">Sia 视觉解读模型</div><div class="vision-content">我看到了你的截图。Sia 的视觉识别模型正在高密计算中……<br><br>此功能需要加入内测才能使用。完整的图片解读、情感操控识别、潜台词分析，将在内测版本中开放。</div></div><div class="disclaimer">· 点击下方申请内测 ·</div><div class="quick-replies"><button class="qr-btn" onclick="document.getElementById('paywallModal').style.display='flex'">申请内测 →</button></div>`,"ai");
+      setTimeout(resetIdleTimer,1500);
+    },delay);
+  }else{
+    setTimeout(async()=>{
+      hideSkeleton();
+      const api=await callLLM(text,convState);
+      addMessage(api||buildResponse(text),"ai");
+      // Check paywall after 5 turns
+      if(!paywallShown&&convState.turnCount>=FREE_TURNS){
+        setTimeout(()=>tryShowPaywall(true),1200);
+      }
+      setTimeout(resetIdleTimer,1500);
+    },delay);
+  }
+}
+
+function sendQuick(text){
+  const fresh=["考虑辞职","备考考公","薪资问题","考虑转行","情感支持"];
+  if(fresh.some(t=>text.includes(t)))convState={phase:"listen",intent:null,industry:null,turnCount:0,userAskedAdvice:false};
+  document.getElementById("chatInput").value=text;
+  handleSend();
+}
+
+function autoResize(el){el.style.height="38px";el.style.height=Math.min(el.scrollHeight,120)+"px";}
+
+// ── EVENTS ────────────────────────────────────────────────────────────
+document.getElementById("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();handleSend();}});
+document.getElementById("sendBtn").addEventListener("click",handleSend);
+document.getElementById("chatInput").addEventListener("input",()=>{autoResize(document.getElementById("chatInput"));resetIdleTimer();});
+document.getElementById("chatInput").addEventListener("focus",resetIdleTimer);
+
+// ── IDLE ──────────────────────────────────────────────────────────────
+let idleTimer=null,idleCount=0,lastIdleMsg=-1;
+const IDLE=["是在发呆吗……还是刚才那句话让你难过了？","没事，不用急着说话。我就在这里。","有时候有些话很难开口，慢慢来。","如果现在不想说了也没关系，我不会走的。","你还好吗？"];
+function resetIdleTimer(){
+  clearTimeout(idleTimer);if(convState.turnCount===0)return;
+  idleTimer=setTimeout(()=>{let i;do{i=Math.floor(Math.random()*IDLE.length);}while(i===lastIdleMsg&&IDLE.length>1);lastIdleMsg=i;idleCount++;if(idleCount<=2)addMessage(`<p>${IDLE[i]}</p>`,"ai");},30000);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function formatSalary(r){return`${(r[0]/1000).toFixed(0)}k–${(r[1]/1000).toFixed(0)}k`;}
+function maternityLabel(s){return{1:"较差",2:"一般",3:"中等",4:"较好",5:"最好"}[s]||"-";}
+function maternityBadge(s){return s>=4?"good":s===3?"mid":"bad";}
+function payGapBadge(r){return r>=.90?"good":r>=.83?"mid":"bad";}
+</script>
+</body>
+</html>
